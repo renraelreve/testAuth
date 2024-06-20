@@ -1,24 +1,27 @@
 package sctp.ntu.booking_api.services;
 
-import java.util.ArrayList;
-
 import sctp.ntu.booking_api.entities.Booking;
+import sctp.ntu.booking_api.entities.Showtime;
+import sctp.ntu.booking_api.entities.User;
 
 public interface BookingService {
     
-    // CREATE
-    Booking createBooking(Integer eid, Integer uid, Integer bookedSeats);
+    // // CREATE
+    Booking createBooking(Showtime showtime, User user, Integer bookedSeats);
 
-    // READ GET ONE
-    Booking getBooking(Integer bid);
+    // // READ GET ONE
+    Booking findBookingByBid(Integer bid);
 
-    // READ GET ALL
-    ArrayList<Booking> getAllBookings();
+    // // READ GET ALL
+    // ArrayList<Booking> getAllBookings();
 
     // UPDATE
-    Booking updateBooking(Integer bid, Integer bookedSeats);
+    Booking updateBooking(Booking booking, int newBookedSeats);
 
-    // DELETE
-    void deleteBooking(Integer bid);
+    // // DELETE
+    // void deleteBooking(Integer bid);
+
+    // ArrayList<Booking> searchBooking(Integer bid);
+
     
 }
