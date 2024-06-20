@@ -2,7 +2,7 @@ package sctp.ntu.booking_api.controllers;
 
 import java.util.ArrayList;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import sctp.ntu.booking_api.entities.User;
-import sctp.ntu.booking_api.entities.Booking;
 import sctp.ntu.booking_api.services.UserService;
 
 @RestController
@@ -32,8 +31,8 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ArrayList<User>> searcUsers(@RequestParam String name) {
-        ArrayList<User> foundUsers = userService.searchUsers(name);
+    public ResponseEntity<ArrayList<User>> searchUser(@RequestParam String name) {
+        ArrayList<User> foundUsers = userService.searchUser(name);
         return new ResponseEntity<>(foundUsers, HttpStatus.OK);
     }
 
@@ -45,7 +44,7 @@ public class UserController {
         //     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         // }
         
-        User newUser = UserService.createUser(customer);
+        User newUser = userService.createUser(user);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
@@ -58,21 +57,21 @@ public class UserController {
 
     // READ (GET ONE)
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Integer id) {
-        User foundUser = UserService.getUser(id);
+    public ResponseEntity<User> getUser(@PathVariable (name = "id") Integer uid) {
+        User foundUser = userService.getUser(uid);
         return new ResponseEntity<>(foundUser, HttpStatus.OK);
     }
 
     // UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateCustomer(@PathVariable Integer id, @RequestBody User user) {
-        User updatedUser = userService.updateUser(id, user);
+    public ResponseEntity<User> updateUser(@PathVariable (name = "id") Integer uid, @RequestBody User user) {
+        User updatedUser = userService.updateUser(uid, user);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);        
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable Integer id) {
-        UserService.deleteUser(id);
+    public ResponseEntity<User> deleteUser(@PathVariable (name = "id") Integer uid) {
+        userService.deleteUser(uid);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

@@ -2,7 +2,7 @@ package sctp.ntu.booking_api.controllers;
 
 import java.util.ArrayList;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,59 +25,59 @@ import sctp.ntu.booking_api.services.BookingService;
 @RequestMapping("/booking")
 public class BookingController {
     
-    private BookingService bookingService;
+    // private BookingService bookingService;
 
-    // @Autowired
-    public BookingController(BookingService bookingService) {
-        this.bookingService = bookingService;
-    }
+    // // @Autowired
+    // public BookingController(BookingService bookingService) {
+    //     this.bookingService = bookingService;
+    // }
 
-    // Nested route - add event id and user to booking
-    // CREATE
-    // [Activity 2 - validation]
-    @PostMapping("")
-    public ResponseEntity<Booking> createBooking(@Valid @RequestBody Integer eid, @Valid @RequestBody Integer uid, @Valid @RequestBody Integer bookedSeats) {
-        Booking newBooking = bookingService.createBooking(booking, eid, user, bookedSeats);
-        return new ResponseEntity<>(newBooking, HttpStatus.CREATED);
-    }
+    // // Nested route - add event id and user to booking
+    // // CREATE
+    // // [Activity 2 - validation]
+    // @PostMapping("")
+    // public ResponseEntity<Booking> createBooking(@Valid @RequestBody Integer eid, @Valid @RequestBody Integer uid, @Valid @RequestBody Integer bookedSeats) {
+    //     Booking newBooking = bookingService.createBooking(eid, uid, bookedSeats);
+    //     return new ResponseEntity<>(newBooking, HttpStatus.CREATED);
+    // }
 
-    // READ (GET ALL)
-    @GetMapping("")
-    public ResponseEntity<ArrayList<Booking>> getAllBookings() {
-        ArrayList<Booking> allBookings = BookingService.getAllBookings();
-        return new ResponseEntity<>(allBookings, HttpStatus.OK);
-    }
+    // // READ (GET ALL)
+    // @GetMapping("")
+    // public ResponseEntity<ArrayList<Booking>> getAllBookings() {
+    //     ArrayList<Booking> allBookings = BookingService.getAllBookings();
+    //     return new ResponseEntity<>(allBookings, HttpStatus.OK);
+    // }
 
-    // READ (GET ONE)
-    @GetMapping("/{id}")
-    public ResponseEntity<Booking> getBooking(@PathVariable Integer bid) {
-        try {
-            Booking foundBooking = BookingService.getBooking(bid);
-            return new ResponseEntity<>(foundBooking, HttpStatus.OK);
-        } catch (BookingNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+    // // READ (GET ONE)
+    // @GetMapping("/{id}")
+    // public ResponseEntity<Booking> getBooking(@PathVariable (name = "id") Integer bid) {
+    //     try {
+    //         Booking foundBooking = BookingService.getBooking(bid);
+    //         return new ResponseEntity<>(foundBooking, HttpStatus.OK);
+    //     } catch (BookingNotFoundException e) {
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //     }
+    // }
 
-    // UPDATE
-    @PutMapping("/{id}")
-    public ResponseEntity<Booking> updateBooking(@PathVariable Integer bid, @RequestBody Booking booking, @RequestBody Integer bookedSeats) {
-        try {
-            Booking updatedBooking = BookingService.updateBooking(bid, booking);
-            return new ResponseEntity<>(updatedBooking, HttpStatus.OK);
-        } catch (BookingNotFoundException e) {
-            // not found, return 404
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }                
-    }
+    // // UPDATE
+    // @PutMapping("/{id}")
+    // public ResponseEntity<Booking> updateBooking(@PathVariable (name = "id") Integer bid, @RequestBody Booking booking, @RequestBody Integer bookedSeats) {
+    //     try {
+    //         Booking updatedBooking = BookingService.updateBooking(bid, booking);
+    //         return new ResponseEntity<>(updatedBooking, HttpStatus.OK);
+    //     } catch (BookingNotFoundException e) {
+    //         // not found, return 404
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //     }                
+    // }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Booking> deleteBooking(@PathVariable Integer bid) {
-        try {
-            BookingService.deleteBooking(bid);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (BookingNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+    // @DeleteMapping("/{id}")
+    // public ResponseEntity<Booking> deleteBooking(@PathVariable (name = "id") Integer bid) {
+    //     try {
+    //         BookingService.deleteBooking(bid);
+    //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    //     } catch (BookingNotFoundException e) {
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //     }
+    // }
 }
