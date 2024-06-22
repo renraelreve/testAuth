@@ -3,6 +3,7 @@ package sctp.ntu.booking_api.entities;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -35,8 +36,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "bid", cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Booking> booking;
 
     // Constructor
