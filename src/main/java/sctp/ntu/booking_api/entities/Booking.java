@@ -1,6 +1,7 @@
 package sctp.ntu.booking_api.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -39,13 +40,17 @@ public class Booking {
     this.bookedSeats = bookedSeats;
   }
 
-  @JsonBackReference(value = "showtime - booking")
+  // https://stackoverflow.com/questions/20119142/jackson-multiple-back-reference-properties-with-name-defaultreference
+  // JsonBackReference need to be named to avoid Multiple back-reference
+  // properties with name 'defaultReference'
+  @JsonBackReference(value = "showtime-booking")
   @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.MERGE)
   @JoinColumn(name = "showtime", referencedColumnName = "sid")
   private Showtime showtime;
 
-  @JsonBackReference(value = "user - booking")
+  @JsonBackReference(value = "user-booking")
   @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.MERGE)
+  // https://www.baeldung.com/jpa-joincolumn-vs-mappedby
   @JoinColumn(name = "username", referencedColumnName = "uid")
   private User user;
 
