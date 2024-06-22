@@ -36,6 +36,7 @@ public class BookingController {
   // // CREATE
   // // [Activity 2 - validation]
 
+  // @PostMapping
   // public ResponseEntity<Booking> createBooking(@Valid @RequestBody Integer eid,
   // @Valid @RequestBody Integer uid, @Valid @RequestBody Integer bookedSeats) {
   // Booking newBooking = bookingService.createBooking(eid, uid, bookedSeats);
