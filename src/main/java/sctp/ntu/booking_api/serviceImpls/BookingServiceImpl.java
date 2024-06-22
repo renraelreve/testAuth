@@ -20,87 +20,107 @@ import sctp.ntu.booking_api.services.ShowtimeService;
 
 @Service
 public class BookingServiceImpl implements BookingService {
-    
-    private ShowtimeService showtimeService;
 
-    private BookingRepository bookingRepository;
-    private UserRepository userRepository;
-    private ShowtimeRepository showtimeRepository;
+  private ShowtimeService showtimeService;
 
+  private BookingRepository bookingRepository;
+  private UserRepository userRepository;
+  private ShowtimeRepository showtimeRepository;
 
-    // @Autowired
-    public BookingServiceImpl(BookingRepository bookingRepository, UserRepository userRepository, ShowtimeRepository showtimeRepository, ShowtimeService showtimeService) {
-        this.showtimeService = showtimeService;
-        this.bookingRepository = bookingRepository;
-        this.userRepository = userRepository;
-        this.showtimeRepository = showtimeRepository;
-    }
+  // @Autowired
+  public BookingServiceImpl(BookingRepository bookingRepository, UserRepository userRepository,
+      ShowtimeRepository showtimeRepository, ShowtimeService showtimeService) {
+    this.showtimeService = showtimeService;
+    this.bookingRepository = bookingRepository;
+    this.userRepository = userRepository;
+    this.showtimeRepository = showtimeRepository;
+  }
 
-    @Override
-    public Booking createBooking(Showtime showtime, User user, Integer bookedSeats) {
-        // initialise booking with 0
-        Booking newBooking = new Booking(showtime, user, bookedSeats);
-        bookingRepository.save(newBooking);
-        // update showtime with new number of seats
-        showtimeService.changeBalSeats(showtime, newBooking, 2 * bookedSeats);
-        return newBooking;
-    }
+  @Override
+  public Booking createBooking(Showtime showtime, User user, Integer bookedSeats) {
+    // initialise booking with 0
+    Booking newBooking = new Booking(showtime, user, bookedSeats);
+    bookingRepository.save(newBooking);
+    // update showtime with new number of seats
+    showtimeService.changeBalSeats(showtime, newBooking, 2 * bookedSeats);
+    return newBooking;
+  }
 
-    @Override
-    public Booking findBookingByBid(Integer bid) {
-        Booking booking = bookingRepository.findBookingByBid(bid);
-        return booking;
-    };
+  @Override
+  public Booking findBookingByBid(Integer bid) {
+    Booking booking = bookingRepository.findBookingByBid(bid);
+    return booking;
+  };
 
-    // @Override
-    // public Interaction addInteractionToCustomer(Long id, Interaction interaction) {
-    //     // retrieve the customer from the database
-    //     // [Activity 1 - Refactor code]
-    //     Customer selectedCustomer = customerRepository.findById(id).orElseThrow(() -> new CustomerNotFoundException(id));
+  // @Override
+  // public Interaction addInteractionToCustomer(Long id, Interaction interaction)
+  // {
+  // // retrieve the customer from the database
+  // // [Activity 1 - Refactor code]
+  // Customer selectedCustomer = customerRepository.findById(id).orElseThrow(() ->
+  // new CustomerNotFoundException(id));
 
-    //     // add the customer to the interaction
-    //     interaction.setCustomer(selectedCustomer);
-    //     // save the interaction to the database
-    //     return interactionRepository.save(interaction);
+  // // add the customer to the interaction
+  // interaction.setCustomer(selectedCustomer);
+  // // save the interaction to the database
+  // return interactionRepository.save(interaction);
 
-    // @Override
-    // public Booking getBooking(Integer bid) {
-    //     // Optional<Customer> optionalCustomer = customerRepository.findById(id);
-    //     // if(optionalCustomer.isPresent()) {
-    //     //     Customer foundCustomer = optionalCustomer.get();
-    //     //     return foundCustomer;
-    //     // }
-    //     // throw new CustomerNotFoundException(id);
-    //     return bookingRepository.findById(bid).orElseThrow(()-> new BookingNotFoundException(id));
-    // }
+  // @Override
+  // public Booking getBooking(Integer bid) {
+  // // Optional<Customer> optionalCustomer = customerRepository.findById(id);
+  // // if(optionalCustomer.isPresent()) {
+  // // Customer foundCustomer = optionalCustomer.get();
+  // // return foundCustomer;
+  // // }
+  // // throw new CustomerNotFoundException(id);
+  // return bookingRepository.findById(bid).orElseThrow(()-> new
+  // BookingNotFoundException(id));
+  // }
 
-    // @Override
-    // public ArrayList<Booking> getAllBookings() {
-    //     List<Booking> allBookings = bookingRepository.findAll();
-    //     return (ArrayList<Booking>) allBookings;
-    // }
+  @Override
+  public ArrayList<Booking> getAllBookings() {
+    List<Booking> allBookings = bookingRepository.findAll();
+    return (ArrayList<Booking>) allBookings;
+  }
 
-    @Override
-    public Booking updateBooking(Booking bookingToUpdate, int newBookedSeats) {
-        // retrieve the customer from the database
-        // [Activity 1 - Refactor code]
-        
-        // update the balance seats in the showtime slot due to new number of booked seats
-        showtimeService.changeBalSeats(bookingToUpdate.getShowtime(), bookingToUpdate, newBookedSeats);
-        // update the booking retrieved from the parameter
-        bookingToUpdate.setBookedSeats(newBookedSeats);
-        // save the updated customer back to the database
-        return bookingRepository.save(bookingToUpdate);
-    }
+  @Override
+  public Booking updateBooking(Booking bookingToUpdate, int newBookedSeats) {
+    // retrieve the customer from the database
+    // [Activity 1 - Refactor code]
 
-    // @Override
-    // public void deleteBooking(Integer bid) {
-    //     bookingRepository.deleteById(bid);
-    // }
+    // update the balance seats in the showtime slot due to new number of booked
+    // seats
+    showtimeService.changeBalSeats(bookingToUpdate.getShowtime(), bookingToUpdate, newBookedSeats);
+    // update the booking retrieved from the parameter
+    bookingToUpdate.setBookedSeats(newBookedSeats);
+    // save the updated customer back to the database
+    return bookingRepository.save(bookingToUpdate);
+  }
 
+  // @Override
+  // public void deleteBooking(Integer bid) {
+  // bookingRepository.deleteById(bid);
+  // }
 
-    // }
+  @Override
+  // @Transactional
+  public Booking addBooking(int uid, int sid, Booking booking) {
+    User user = userRepository.findById(uid).orElseThrow(() -> new UserNotFoundException(uid));
+    Showtime showtime = showtimeRepository.findById(sid).orElseThrow(() -> new ShowtimeNotFoundException(sid));
 
-    
+    booking.setUser(user);
+    booking.setShowtime(showtime);
 
+    Booking savedBooking = bookingRepository.save(booking);
+    updateBalanceSeats(showtime);
+    return savedBooking;
+  }
+
+  private void updateBalanceSeats(Showtime showtime) {
+    List<Booking> bookings = showtime.getBooking();
+    int totalSeats = showtime.getTotalSeats();
+    int bookedSeats = bookings.stream().mapToInt(Booking::getBookedSeats).sum();
+    showtime.setBalSeats(totalSeats - bookedSeats);
+    showtimeRepository.save(showtime);
+  }
 }
