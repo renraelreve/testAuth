@@ -35,7 +35,7 @@ public class BookingController {
   // // Nested route - add event id and user to booking
   // // CREATE
   // // [Activity 2 - validation]
-  // @PostMapping("")
+
   // public ResponseEntity<Booking> createBooking(@Valid @RequestBody Integer eid,
   // @Valid @RequestBody Integer uid, @Valid @RequestBody Integer bookedSeats) {
   // Booking newBooking = bookingService.createBooking(eid, uid, bookedSeats);
@@ -85,4 +85,10 @@ public class BookingController {
   // return new ResponseEntity<>(HttpStatus.NOT_FOUND);
   // }
   // }
+  @PostMapping("users/{uid}/showtimes/{sid}")
+  public ResponseEntity<Booking> createBooking(@PathVariable int uid, @PathVariable int sid,
+      @RequestBody Booking booking) {
+    Booking newBooking = bookingService.addBooking(uid, sid, booking);
+    return new ResponseEntity<>(newBooking, HttpStatus.CREATED);
+  }
 }

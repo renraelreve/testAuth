@@ -23,6 +23,8 @@ public interface BookingService {
   // // DELETE
   // void deleteBooking(Integer bid);
 
+  Booking addBooking(int uid, int sid, Booking booking);
+
   // ArrayList<Booking> searchBooking(Integer bid);
 
 }

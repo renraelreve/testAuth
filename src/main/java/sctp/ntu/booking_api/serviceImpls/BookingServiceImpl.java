@@ -102,6 +102,25 @@ public class BookingServiceImpl implements BookingService {
   // bookingRepository.deleteById(bid);
   // }
 
-  // }
+  @Override
+  // @Transactional
+  public Booking addBooking(int uid, int sid, Booking booking) {
+    User user = userRepository.findById(uid).orElseThrow(() -> new UserNotFoundException(uid));
+    Showtime showtime = showtimeRepository.findById(sid).orElseThrow(() -> new ShowtimeNotFoundException(sid));
 
+    booking.setUser(user);
+    booking.setShowtime(showtime);
+
+    Booking savedBooking = bookingRepository.save(booking);
+    updateBalanceSeats(showtime);
+    return savedBooking;
+  }
+
+  private void updateBalanceSeats(Showtime showtime) {
+    List<Booking> bookings = showtime.getBooking();
+    int totalSeats = showtime.getTotalSeats();
+    int bookedSeats = bookings.stream().mapToInt(Booking::getBookedSeats).sum();
+    showtime.setBalSeats(totalSeats - bookedSeats);
+    showtimeRepository.save(showtime);
+  }
 }
