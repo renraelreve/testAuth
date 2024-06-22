@@ -76,16 +76,13 @@ public class BookingController {
   // }
   // }
 
-  // @DeleteMapping("/{id}")
-  // public ResponseEntity<Booking> deleteBooking(@PathVariable (name = "id")
-  // Integer bid) {
-  // try {
-  // BookingService.deleteBooking(bid);
-  // return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-  // } catch (BookingNotFoundException e) {
-  // return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-  // }
-  // }
+  @DeleteMapping("/{bid}")
+  public ResponseEntity<Booking> deleteBooking(@PathVariable int bid) {
+
+    bookingService.deleteBooking(bid);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
+
   @PostMapping("users/{uid}/showtimes/{sid}")
   public ResponseEntity<Booking> createBooking(@PathVariable int uid, @PathVariable int sid,
       @RequestBody Booking booking) {
