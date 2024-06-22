@@ -97,10 +97,18 @@ public class BookingServiceImpl implements BookingService {
     return bookingRepository.save(bookingToUpdate);
   }
 
-  // @Override
-  // public void deleteBooking(Integer bid) {
-  // bookingRepository.deleteById(bid);
-  // }
+  @Override
+  public void deleteBooking(Integer bid) {
+    Booking bookingToDelete = bookingRepository.findById(bid).orElseThrow(() -> new BookingNotFoundException(bid));
+
+    // Get the showtime associated with the booking
+    Showtime showtime = bookingToDelete.getShowtime();
+
+    // Remove the booking from the showtime's bookings list
+    showtime.getBooking().remove(bookingToDelete);
+    bookingRepository.deleteById(bid);
+    updateBalanceSeats(showtime);
+  }
 
   @Override
   // @Transactional

@@ -20,8 +20,8 @@ public interface BookingService {
   // UPDATE
   Booking updateBooking(Booking booking, int newBookedSeats);
 
-  // // DELETE
-  // void deleteBooking(Integer bid);
+  // DELETE
+  void deleteBooking(Integer bid);
 
   Booking addBooking(int uid, int sid, Booking booking);
 
