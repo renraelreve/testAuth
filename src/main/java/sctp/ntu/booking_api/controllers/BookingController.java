@@ -62,19 +62,11 @@ public class BookingController {
   // }
   // }
 
-  // // UPDATE
-  // @PutMapping("/{id}")
-  // public ResponseEntity<Booking> updateBooking(@PathVariable (name = "id")
-  // Integer bid, @RequestBody Booking booking, @RequestBody Integer bookedSeats)
-  // {
-  // try {
-  // Booking updatedBooking = BookingService.updateBooking(bid, booking);
-  // return new ResponseEntity<>(updatedBooking, HttpStatus.OK);
-  // } catch (BookingNotFoundException e) {
-  // // not found, return 404
-  // return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-  // }
-  // }
+  @PutMapping("/{bid}")
+  public ResponseEntity<Booking> updateBooking(@PathVariable int bid, @RequestBody Booking booking) {
+    Booking updatedBooking = bookingService.updateBooking(bid, booking);
+    return new ResponseEntity<>(updatedBooking, HttpStatus.OK);
+  }
 
   @DeleteMapping("/{bid}")
   public ResponseEntity<Booking> deleteBooking(@PathVariable int bid) {

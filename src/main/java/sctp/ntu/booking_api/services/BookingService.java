@@ -18,7 +18,7 @@ public interface BookingService {
   ArrayList<Booking> getAllBookings();
 
   // UPDATE
-  Booking updateBooking(Booking booking, int newBookedSeats);
+  Booking updateBooking(int bid, Booking booking);
 
   // DELETE
   void deleteBooking(Integer bid);

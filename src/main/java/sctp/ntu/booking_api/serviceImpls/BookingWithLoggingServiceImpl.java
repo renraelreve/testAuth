@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import sctp.ntu.booking_api.entities.Booking;
@@ -18,8 +19,9 @@ import sctp.ntu.booking_api.repositories.ShowtimeRepository;
 import sctp.ntu.booking_api.services.BookingService;
 import sctp.ntu.booking_api.services.ShowtimeService;
 
+@Primary
 @Service
-public class BookingServiceImpl implements BookingService {
+public class BookingWithLoggingServiceImpl implements BookingService {
 
   private ShowtimeService showtimeService;
 
@@ -28,7 +30,7 @@ public class BookingServiceImpl implements BookingService {
   private ShowtimeRepository showtimeRepository;
 
   // @Autowired
-  public BookingServiceImpl(BookingRepository bookingRepository, UserRepository userRepository,
+  public BookingWithLoggingServiceImpl(BookingRepository bookingRepository, UserRepository userRepository,
       ShowtimeRepository showtimeRepository, ShowtimeService showtimeService) {
     this.showtimeService = showtimeService;
     this.bookingRepository = bookingRepository;
@@ -51,19 +53,6 @@ public class BookingServiceImpl implements BookingService {
     Booking booking = bookingRepository.findBookingByBid(bid);
     return booking;
   };
-
-  // @Override
-  // public Interaction addInteractionToCustomer(Long id, Interaction interaction)
-  // {
-  // // retrieve the customer from the database
-  // // [Activity 1 - Refactor code]
-  // Customer selectedCustomer = customerRepository.findById(id).orElseThrow(() ->
-  // new CustomerNotFoundException(id));
-
-  // // add the customer to the interaction
-  // interaction.setCustomer(selectedCustomer);
-  // // save the interaction to the database
-  // return interactionRepository.save(interaction);
 
   // @Override
   // public Booking getBooking(Integer bid) {
