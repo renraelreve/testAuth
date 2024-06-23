@@ -1,0 +1,9 @@
+2024-06-23 18:21:09 [http-nio-8080-exec-1] INFO  s.n.b.s.BookingWithLoggingServiceImpl - BookingServiceWithLoggingImpl.updateBooking() called
+2024-06-23 18:21:09 [http-nio-8080-exec-1] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 Testing my log file in BookingService
+2024-06-23 18:21:09 [http-nio-8080-exec-1] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Taylor Swift Concert on 2024-03-02 is now 1980
+2024-06-23 18:22:09 [http-nio-8080-exec-2] INFO  s.n.b.s.BookingWithLoggingServiceImpl - BookingServiceWithLoggingImpl.updateBooking() called
+2024-06-23 18:22:09 [http-nio-8080-exec-2] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 Testing my log file in BookingService
+2024-06-23 18:22:19 [http-nio-8080-exec-3] INFO  s.n.b.s.BookingWithLoggingServiceImpl - BookingServiceWithLoggingImpl.updateBooking() called
+2024-06-23 18:22:19 [http-nio-8080-exec-3] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 Testing my log file in BookingService
+2024-06-23 18:23:23 [http-nio-8080-exec-4] ERROR s.n.b.s.BookingWithLoggingServiceImpl - Booking not found with ID: 100
+2024-06-23 18:28:15 [http-nio-8080-exec-5] ERROR s.n.b.s.BookingWithLoggingServiceImpl - Booking not found with ID: 100

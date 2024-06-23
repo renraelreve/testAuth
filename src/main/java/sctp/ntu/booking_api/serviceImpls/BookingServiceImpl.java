@@ -22,7 +22,6 @@ import sctp.ntu.booking_api.services.ShowtimeService;
 public class BookingServiceImpl implements BookingService {
 
   private ShowtimeService showtimeService;
-
   private BookingRepository bookingRepository;
   private UserRepository userRepository;
   private ShowtimeRepository showtimeRepository;

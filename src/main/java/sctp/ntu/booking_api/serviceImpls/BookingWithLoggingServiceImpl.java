@@ -1,5 +1,8 @@
 package sctp.ntu.booking_api.serviceImpls;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,8 +26,9 @@ import sctp.ntu.booking_api.services.ShowtimeService;
 @Service
 public class BookingWithLoggingServiceImpl implements BookingService {
 
-  private ShowtimeService showtimeService;
+  private final Logger logger = LoggerFactory.getLogger(BookingWithLoggingServiceImpl.class);
 
+  private ShowtimeService showtimeService;
   private BookingRepository bookingRepository;
   private UserRepository userRepository;
   private ShowtimeRepository showtimeRepository;
@@ -74,17 +78,23 @@ public class BookingWithLoggingServiceImpl implements BookingService {
 
   @Override
   public Booking updateBooking(int bid, Booking booking) {
+    logger.info("BookingServiceWithLoggingImpl.updateBooking() called");
+    logger.info("🟢 Testing my log file in BookingService");
     Booking bookingToUpdate = bookingRepository.findById(bid).orElseThrow(() -> new BookingNotFoundException(bid));
 
     bookingToUpdate.setBookedSeats(booking.getBookedSeats());
     Showtime showtime = bookingToUpdate.getShowtime();
     updateBalanceSeats(showtime);
+    System.out.println("Booking " + bookingToUpdate.getBid() + " has been updated");
     return bookingRepository.save(bookingToUpdate);
   }
 
   @Override
   public void deleteBooking(Integer bid) {
-    Booking bookingToDelete = bookingRepository.findById(bid).orElseThrow(() -> new BookingNotFoundException(bid));
+    Booking bookingToDelete = bookingRepository.findById(bid).orElseThrow(() -> {
+
+      return new BookingNotFoundException(bid);
+    });
 
     // Get the showtime associated with the booking
     Showtime showtime = bookingToDelete.getShowtime();
@@ -114,6 +124,9 @@ public class BookingWithLoggingServiceImpl implements BookingService {
     int totalSeats = showtime.getTotalSeats();
     int bookedSeats = bookings.stream().mapToInt(Booking::getBookedSeats).sum();
     showtime.setBalSeats(totalSeats - bookedSeats);
+    logger
+        .info("🟢 The balance seats for " + showtime.getEvent().getDescription() + " on " + showtime.getDate()
+            + " is now " + showtime.getBalSeats());
     showtimeRepository.save(showtime);
   }
 }
