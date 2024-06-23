@@ -88,7 +88,7 @@ public class BookingServiceImplTest {
     public void testDeleteBooking_Valid() {
         Booking booking = new Booking();
         Showtime showtime = new Showtime();
-        showtime.setBooking(new ArrayList<>()); // Initialize the booking list
+        showtime.setBooking(new ArrayList<>());
         booking.setShowtime(showtime);
         when(bookingRepository.findById(anyInt())).thenReturn(Optional.of(booking));
         bookingServiceImpl.deleteBooking(1);
@@ -99,7 +99,7 @@ public class BookingServiceImplTest {
     public void testAddBooking_Valid() {
         User user = new User();
         Showtime showtime = new Showtime();
-        showtime.setBooking(new ArrayList<>()); // Initialize the booking list
+        showtime.setBooking(new ArrayList<>()); 
         Booking booking = new Booking();
         when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
         when(showtimeRepository.findById(anyInt())).thenReturn(Optional.of(showtime));
