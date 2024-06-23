@@ -34,8 +34,7 @@ public class EventServiceImpl implements EventService {
 
   @Override
   public Event findEventByEid(Integer eid) {
-    Event event = eventRepository.findEventByEid(eid);
-    return event;
+    return eventRepository.findById(eid).orElseThrow(() -> new EventNotFoundException(eid));
   }
 
   @Override
