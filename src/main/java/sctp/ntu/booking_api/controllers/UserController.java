@@ -39,11 +39,9 @@ public class UserController {
     // CREATE
     @PostMapping("")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        
         // if(bindingResult.hasErrors()) {
-        //     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        // return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         // }
-        
         User newUser = userService.createUser(user);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
@@ -57,20 +55,21 @@ public class UserController {
 
     // READ (GET ONE)
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable (name = "id") Integer uid) {
+    public ResponseEntity<User> getUser(@PathVariable(name = "id") Integer uid) {
         User foundUser = userService.getUser(uid);
         return new ResponseEntity<>(foundUser, HttpStatus.OK);
     }
 
     // UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable (name = "id") Integer uid, @RequestBody User user) {
+    public ResponseEntity<User> updateUser(@PathVariable(name = "id") Integer uid, @Valid @RequestBody User user) {
         User updatedUser = userService.updateUser(uid, user);
-        return new ResponseEntity<>(updatedUser, HttpStatus.OK);        
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
+    // DELETE
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable (name = "id") Integer uid) {
+    public ResponseEntity<User> deleteUser(@PathVariable(name = "id") Integer uid) {
         userService.deleteUser(uid);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

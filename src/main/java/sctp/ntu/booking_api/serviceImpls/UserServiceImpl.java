@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
         // update the customer retrieved from the database
         userToUpdate.setName(user.getName());
         userToUpdate.setEmail(user.getEmail());
-        userToUpdate.setEmail(user.getPassword());
+        userToUpdate.setPassword(user.getPassword());
         // save the updated customer back to the database
         return userRepository.save(userToUpdate);
     }
