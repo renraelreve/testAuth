@@ -37,10 +37,22 @@ public class EventController {
   // ArrayList<Event> foundEvents = eventService.searchEvent(description);
   // return new ResponseEntity<>(foundEvents, HttpStatus.OK);
   // }
+  // @GetMapping("/search")
+  // public ResponseEntity<ArrayList<Event>> searchEvent(@RequestParam String
+  // description) {
+  // ArrayList<Event> foundEvents = eventService.searchEvent(description);
+  // return new ResponseEntity<>(foundEvents, HttpStatus.OK);
+  // }
 
   // CREATE
   // @PostMapping("")
   // public ResponseEntity<Event> createEvent(@Valid @RequestBody Event event) {
+  // // if(bindingResult.hasErrors()) {
+  // // return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+  // // }
+  // Event newEvent = eventService.createEvent(event);
+  // return new ResponseEntity<>(newEvent, HttpStatus.CREATED);
+  // }
 
   // // if(bindingResult.hasErrors()) {
   // // return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -52,6 +64,7 @@ public class EventController {
 
   // READ (GET ALL)
   @GetMapping("/events")
+
   public ResponseEntity<ArrayList<Event>> getAllEvents() {
     ArrayList<Event> allEvents = eventService.getAllEvents();
     return new ResponseEntity<>(allEvents, HttpStatus.OK);
@@ -71,6 +84,13 @@ public class EventController {
   // Event updatedEvent = eventService.updateEvent(eid, event);
   // return new ResponseEntity<>(updatedEvent, HttpStatus.OK);
   // }
+  // UPDATE
+  // @PutMapping("/{id}")
+  // public ResponseEntity<Event> updateEvent(@PathVariable (name = "id") Integer
+  // eid, @RequestBody Event event) {
+  // Event updatedEvent = eventService.updateEvent(eid, event);
+  // return new ResponseEntity<>(updatedEvent, HttpStatus.OK);
+  // }
 
   @DeleteMapping("/events")
   public ResponseEntity<Event> deleteAllEvents() {
@@ -78,10 +98,9 @@ public class EventController {
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
-  @DeleteMapping("/event/{eid}")
-  public ResponseEntity<Event> deleteEvent(@PathVariable Integer eid) {
+  @DeleteMapping("/event/{id}")
+  public ResponseEntity<Event> deleteEvent(@PathVariable(name = "id") Integer eid) {
     eventService.deleteEventbyEid(eid);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
-
 }

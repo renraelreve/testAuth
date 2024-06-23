@@ -1,5 +1,0 @@
-2024-06-24 00:21:08 [http-nio-8080-exec-5] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Taylor Swift Concert on 2024-03-02 is now 1980
-2024-06-24 00:21:19 [http-nio-8080-exec-7] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Taylor Swift Concert on 2024-03-02 is now 1970
-2024-06-24 00:21:28 [http-nio-8080-exec-6] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Taylor Swift Concert on 2024-03-02 is now 20
-2024-06-24 00:21:35 [http-nio-8080-exec-8] ERROR s.n.b.s.BookingWithLoggingServiceImpl - 🔴 Not enough seats! 1950 seats are added. Seats available are only 20
-2024-06-24 00:22:18 [http-nio-8080-exec-10] ERROR s.n.b.s.BookingWithLoggingServiceImpl - 🔴 Not enought seats! You have increased seats from 20 to 70(increase by 50). Seats available are only 20
