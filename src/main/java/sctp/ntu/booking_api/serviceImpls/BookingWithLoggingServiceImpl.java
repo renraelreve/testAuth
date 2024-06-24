@@ -1,9 +1,13 @@
 package sctp.ntu.booking_api.serviceImpls;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import sctp.ntu.booking_api.entities.Booking;
@@ -12,14 +16,18 @@ import sctp.ntu.booking_api.entities.Showtime;
 import sctp.ntu.booking_api.exceptions.BookingNotFoundException;
 import sctp.ntu.booking_api.exceptions.UserNotFoundException;
 import sctp.ntu.booking_api.exceptions.ShowtimeNotFoundException;
+import sctp.ntu.booking_api.exceptions.SeatsNotEnoughException;
 import sctp.ntu.booking_api.repositories.BookingRepository;
 import sctp.ntu.booking_api.repositories.UserRepository;
 import sctp.ntu.booking_api.repositories.ShowtimeRepository;
 import sctp.ntu.booking_api.services.BookingService;
 import sctp.ntu.booking_api.services.ShowtimeService;
 
+@Primary
 @Service
-public class BookingServiceImpl implements BookingService {
+public class BookingWithLoggingServiceImpl implements BookingService {
+
+  private final Logger logger = LoggerFactory.getLogger(BookingWithLoggingServiceImpl.class);
 
   private ShowtimeService showtimeService;
   private BookingRepository bookingRepository;
@@ -27,7 +35,7 @@ public class BookingServiceImpl implements BookingService {
   private ShowtimeRepository showtimeRepository;
 
   // @Autowired
-  public BookingServiceImpl(BookingRepository bookingRepository, UserRepository userRepository,
+  public BookingWithLoggingServiceImpl(BookingRepository bookingRepository, UserRepository userRepository,
       ShowtimeRepository showtimeRepository, ShowtimeService showtimeService) {
     this.showtimeService = showtimeService;
     this.bookingRepository = bookingRepository;
@@ -51,31 +59,6 @@ public class BookingServiceImpl implements BookingService {
     return booking;
   };
 
-  // @Override
-  // public Interaction addInteractionToCustomer(Long id, Interaction interaction)
-  // {
-  // // retrieve the customer from the database
-  // // [Activity 1 - Refactor code]
-  // Customer selectedCustomer = customerRepository.findById(id).orElseThrow(() ->
-  // new CustomerNotFoundException(id));
-
-  // // add the customer to the interaction
-  // interaction.setCustomer(selectedCustomer);
-  // // save the interaction to the database
-  // return interactionRepository.save(interaction);
-
-  // @Override
-  // public Booking getBooking(Integer bid) {
-  // // Optional<Customer> optionalCustomer = customerRepository.findById(id);
-  // // if(optionalCustomer.isPresent()) {
-  // // Customer foundCustomer = optionalCustomer.get();
-  // // return foundCustomer;
-  // // }
-  // // throw new CustomerNotFoundException(id);
-  // return bookingRepository.findById(bid).orElseThrow(()-> new
-  // BookingNotFoundException(id));
-  // }
-
   @Override
   public ArrayList<Booking> getAllBookings() {
     List<Booking> allBookings = bookingRepository.findAll();
@@ -84,25 +67,51 @@ public class BookingServiceImpl implements BookingService {
 
   @Override
   public Booking updateBooking(int bid, Booking booking) {
+
     Booking bookingToUpdate = bookingRepository.findById(bid).orElseThrow(() -> new BookingNotFoundException(bid));
+
+    int increasedSeats = booking.getBookedSeats() - bookingToUpdate.getBookedSeats();
+
+    int initialSeats = bookingToUpdate.getBookedSeats();
 
     bookingToUpdate.setBookedSeats(booking.getBookedSeats());
     Showtime showtime = bookingToUpdate.getShowtime();
-    updateBalanceSeats(showtime);
-    return bookingRepository.save(bookingToUpdate);
+
+    try {
+
+      updateBalanceSeats(showtime);
+      System.out.println("Booking " + bookingToUpdate.getBid() + " has been updated");
+      return bookingRepository.save(bookingToUpdate);
+    } catch (SeatsNotEnoughException e) {
+
+      logger
+          .error("🔴 Not enought seats! You have increased seats from " + initialSeats
+              + " to " + booking.getBookedSeats() + "(increase by " + increasedSeats + "). Seats available are only "
+              + showtime.getBalSeats());
+      throw new RuntimeException("Not enough seats available for booking update", e);
+    }
   }
 
   @Override
   public void deleteBooking(Integer bid) {
-    Booking bookingToDelete = bookingRepository.findById(bid).orElseThrow(() -> new BookingNotFoundException(bid));
+    Booking bookingToDelete = bookingRepository.findById(bid).orElseThrow(() -> {
+      return new BookingNotFoundException(bid);
+    });
 
     // Get the showtime associated with the booking
     Showtime showtime = bookingToDelete.getShowtime();
 
     // Remove the booking from the showtime's bookings list
     showtime.getBooking().remove(bookingToDelete);
+    logger.info("🟢 Booking of " + bookingToDelete.getBookedSeats() + " seats has been deleted");
     bookingRepository.deleteById(bid);
-    updateBalanceSeats(showtime);
+
+    try {
+      updateBalanceSeats(showtime);
+    } catch (SeatsNotEnoughException e) {
+
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -111,19 +120,38 @@ public class BookingServiceImpl implements BookingService {
     User user = userRepository.findById(uid).orElseThrow(() -> new UserNotFoundException(uid));
     Showtime showtime = showtimeRepository.findById(sid).orElseThrow(() -> new ShowtimeNotFoundException(sid));
 
-    booking.setUser(user);
-    booking.setShowtime(showtime);
+    try {
 
-    Booking savedBooking = bookingRepository.save(booking);
-    updateBalanceSeats(showtime);
-    return savedBooking;
+      // Check seat availability before saving the booking
+      if (showtime.getBalSeats() < booking.getBookedSeats()) {
+        throw new SeatsNotEnoughException(booking.getBookedSeats());
+      }
+
+      booking.setUser(user);
+      booking.setShowtime(showtime);
+
+      Booking savedBooking = bookingRepository.save(booking);
+      updateBalanceSeats(showtime);
+      return savedBooking;
+    } catch (SeatsNotEnoughException e) {
+      logger.error("🔴 Not enough seats! " + booking.getBookedSeats() + " seats are added. Seats available are only "
+          + showtime.getBalSeats());
+      throw new RuntimeException("Not enough seats available for booking update", e);
+    }
   }
 
-  private void updateBalanceSeats(Showtime showtime) {
+  private void updateBalanceSeats(Showtime showtime) throws SeatsNotEnoughException {
     List<Booking> bookings = showtime.getBooking();
     int totalSeats = showtime.getTotalSeats();
     int bookedSeats = bookings.stream().mapToInt(Booking::getBookedSeats).sum();
+    if (bookedSeats > totalSeats) {
+      throw new SeatsNotEnoughException(bookedSeats);
+    }
+
     showtime.setBalSeats(totalSeats - bookedSeats);
+    logger
+        .info("🟢 The balance seats for " + showtime.getEvent().getDescription() + " on " + showtime.getDate()
+            + " is now " + showtime.getBalSeats());
     showtimeRepository.save(showtime);
   }
 }
