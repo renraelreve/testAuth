@@ -24,59 +24,83 @@ import sctp.ntu.booking_api.services.EventService;
 @Transactional
 public class EventController {
 
-    private EventService eventService;
+  private EventService eventService;
 
-    // @Autowired
-    public EventController(EventService eventService) {
-        this.eventService = eventService;
-    }
+  // @Autowired
+  public EventController(EventService eventService) {
+    this.eventService = eventService;
+  }
 
-    // @GetMapping("/search")
-    // public ResponseEntity<ArrayList<Event>> searchEvent(@RequestParam String description) {
-    // ArrayList<Event> foundEvents = eventService.searchEvent(description);
-    // return new ResponseEntity<>(foundEvents, HttpStatus.OK);
-    // }
+  // @GetMapping("/search")
+  // public ResponseEntity<ArrayList<Event>> searchEvent(@RequestParam String
+  // description) {
+  // ArrayList<Event> foundEvents = eventService.searchEvent(description);
+  // return new ResponseEntity<>(foundEvents, HttpStatus.OK);
+  // }
+  // @GetMapping("/search")
+  // public ResponseEntity<ArrayList<Event>> searchEvent(@RequestParam String
+  // description) {
+  // ArrayList<Event> foundEvents = eventService.searchEvent(description);
+  // return new ResponseEntity<>(foundEvents, HttpStatus.OK);
+  // }
 
-    // CREATE
-    // @PostMapping("")
-    // public ResponseEntity<Event> createEvent(@Valid @RequestBody Event event) {
-    //     // if(bindingResult.hasErrors()) {
-    //     // return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    //     // }
-    //     Event newEvent = eventService.createEvent(event);
-    //     return new ResponseEntity<>(newEvent, HttpStatus.CREATED);
-    // }
+  // CREATE
+  // @PostMapping("")
+  // public ResponseEntity<Event> createEvent(@Valid @RequestBody Event event) {
+  // // if(bindingResult.hasErrors()) {
+  // // return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+  // // }
+  // Event newEvent = eventService.createEvent(event);
+  // return new ResponseEntity<>(newEvent, HttpStatus.CREATED);
+  // }
 
-    // READ (GET ALL)
-    @GetMapping("/events")
-    public ResponseEntity<ArrayList<Event>> getAllEvents() {
-        ArrayList<Event> allEvents = eventService.getAllEvents();
-        return new ResponseEntity<>(allEvents, HttpStatus.OK);
-    }
+  // // if(bindingResult.hasErrors()) {
+  // // return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+  // // }
 
-    // READ (GET ONE)
-    @GetMapping("/event/{id}")
-    public ResponseEntity<Event> getEventByEid(@PathVariable(name = "id") Integer eid) {
-        Event foundEvent = eventService.findEventByEid(eid);
-        return new ResponseEntity<>(foundEvent, HttpStatus.OK);
-    }
+  // Event newEvent = eventService.createEvent(event);
+  // return new ResponseEntity<>(newEvent, HttpStatus.CREATED);
+  // }
 
-    // UPDATE
-    // @PutMapping("/{id}")
-    // public ResponseEntity<Event> updateEvent(@PathVariable (name = "id") Integer eid, @RequestBody Event event) {
-    // Event updatedEvent = eventService.updateEvent(eid, event);
-    // return new ResponseEntity<>(updatedEvent, HttpStatus.OK);        
-    // }
+  // READ (GET ALL)
+  @GetMapping("/events")
 
-    @DeleteMapping("/events")
-    public ResponseEntity<Event> deleteAllEvents() {
-        eventService.deleteAll();
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+  public ResponseEntity<ArrayList<Event>> getAllEvents() {
+    ArrayList<Event> allEvents = eventService.getAllEvents();
+    return new ResponseEntity<>(allEvents, HttpStatus.OK);
+  }
 
-    @DeleteMapping("/event/{id}")
-    public ResponseEntity<Event> deleteEvent(@PathVariable(name = "id") Integer eid) {
-        eventService.deleteEventbyEid(eid);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+  // READ (GET ONE)
+  @GetMapping("/event/{id}")
+  public ResponseEntity<Event> getEventByEid(@PathVariable(name = "id") Integer eid) {
+    Event foundEvent = eventService.findEventByEid(eid);
+    return new ResponseEntity<>(foundEvent, HttpStatus.OK);
+  }
+
+  // UPDATE
+  // @PutMapping("/{id}")
+  // public ResponseEntity<Event> updateEvent(@PathVariable (name = "id") Integer
+  // eid, @RequestBody Event event) {
+  // Event updatedEvent = eventService.updateEvent(eid, event);
+  // return new ResponseEntity<>(updatedEvent, HttpStatus.OK);
+  // }
+  // UPDATE
+  // @PutMapping("/{id}")
+  // public ResponseEntity<Event> updateEvent(@PathVariable (name = "id") Integer
+  // eid, @RequestBody Event event) {
+  // Event updatedEvent = eventService.updateEvent(eid, event);
+  // return new ResponseEntity<>(updatedEvent, HttpStatus.OK);
+  // }
+
+  @DeleteMapping("/events")
+  public ResponseEntity<Event> deleteAllEvents() {
+    eventService.deleteAll();
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
+
+  @DeleteMapping("/event/{id}")
+  public ResponseEntity<Event> deleteEvent(@PathVariable(name = "id") Integer eid) {
+    eventService.deleteEventbyEid(eid);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
 }
