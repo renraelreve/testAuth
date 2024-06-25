@@ -33,66 +33,93 @@ public class UserServiceImplTest {
 
     @Test
     public void testSearchUser_Valid() {
+        //SETUP
         List<User> users = new ArrayList<>();
         users.add(new User());
+        //MOCK
         when(userRepository.findByName(anyString())).thenReturn(users);
+        //EXECUTE
         List<User> foundUsers = userServiceImpl.searchUser("John");
+        //ASSERT
         assertEquals(1, foundUsers.size());
     }
 
     @Test
     public void testFindOneUser_Valid() {
+        //SETUP
         User user = new User();
+        //MOCK
         when(userRepository.findOneByName(anyString())).thenReturn(user);
+        //EXECUTE
         User foundUser = userServiceImpl.findOneUser("John");
+        //ASSERT
         assertNotNull(foundUser);
     }
 
     @Test
     public void testCreateUser_Valid() {
+        //SETUP
         User user = new User();
+        //MOCK
         when(userRepository.save(any(User.class))).thenReturn(user);
+        //EXECUTE
         User createdUser = userServiceImpl.createUser(user);
+        //ASSERT
         assertNotNull(createdUser);
     }
 
     @Test
     public void testGetUser_Valid() {
+        //SETUP
         User user = new User();
+        //MOCK
         when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
+        //EXECUTE
         User foundUser = userServiceImpl.getUser(1);
+        //ASSERT
         assertNotNull(foundUser);
     }
 
     @Test
-    public void testGetUser_NotFound() {
+    public void testGetUser_NotFound() { //NO DATA IS NEEDED
+        //MOCK
         when(userRepository.findById(anyInt())).thenReturn(Optional.empty());
+        //EXECUTE & ASSERT
         assertThrows(UserNotFoundException.class, () -> userServiceImpl.getUser(1));
     }
 
     @Test
     public void testGetAllUsers() {
+        //SETUP
         List<User> users = new ArrayList<>();
         users.add(new User());
+        //MOCK
         when(userRepository.findAll()).thenReturn(users);
+        //EXECUTE
         List<User> allUsers = userServiceImpl.getAllUsers();
+        //ASSERT
         assertEquals(1, allUsers.size());
     }
 
     @Test
     public void testUpdateUser_Valid() {
+        //SETUP
         User user = new User();
         user.setName("UpdatedName");
+        //MOCK
         when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenReturn(user);
+        //EXCEUTE
         User updatedUser = userServiceImpl.updateUser(1, user);
+        //ASSERT
         assertEquals("UpdatedName", updatedUser.getName());
     }
 
     @Test
     public void testDeleteUser_Valid() {
-        doNothing().when(userRepository).deleteById(anyInt());
+        //EXECUTE
         userServiceImpl.deleteUser(1);
+        //VERIFY
         verify(userRepository, times(1)).deleteById(1);
     }
 }
