@@ -28,3 +28,11 @@
 2024-06-26 18:17:35 [main] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Sample Event on null is now 0
 2024-06-26 18:17:35 [main] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Sample Event on null is now 0
 2024-06-26 18:17:35 [main] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Sample Event on null is now 0
+2024-06-26 18:36:16 [main] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 Booking of 0 seats has been deleted
+2024-06-26 18:36:16 [main] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Sample Event on null is now 0
+2024-06-26 18:36:16 [main] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Sample Event on null is now 0
+2024-06-26 18:36:16 [main] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Sample Event on null is now 0
+2024-06-26 18:43:02 [main] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 Booking of 0 seats has been deleted
+2024-06-26 18:43:02 [main] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Sample Event on null is now 0
+2024-06-26 18:43:02 [main] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Sample Event on null is now 0
+2024-06-26 18:43:02 [main] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Sample Event on null is now 0

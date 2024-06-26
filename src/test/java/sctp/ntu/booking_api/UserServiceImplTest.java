@@ -1,5 +1,8 @@
 package sctp.ntu.booking_api;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,93 +36,93 @@ public class UserServiceImplTest {
 
     @Test
     public void testSearchUser_Valid() {
-        //Setup
+        //SETUP
         List<User> users = new ArrayList<>();
         users.add(new User());
-        //Mock
+        //MOCK
         when(userRepository.findByName(anyString())).thenReturn(users);
-        //Execute
+        //EXECUTE
         List<User> foundUsers = userServiceImpl.searchUser("John");
-        //Assert
+        //ASSERT
         assertEquals(1, foundUsers.size());
     }
 
     @Test
     public void testFindOneUser_Valid() {
-        //Setup
+        //SETUP
         User user = new User();
-        //Mock
+        //MOCK
         when(userRepository.findOneByName(anyString())).thenReturn(user);
-        //Execute
+        //EXECUTE
         User foundUser = userServiceImpl.findOneUser("John");
-        //Assert
+        //ASSERT
         assertNotNull(foundUser);
     }
 
     @Test
     public void testCreateUser_Valid() {
-        //Setup
+        //SETUP
         User user = new User();
-        //Mock
+        //MOCK
         when(userRepository.save(any(User.class))).thenReturn(user);
-        //Execute
+        //EXECUTE
         User createdUser = userServiceImpl.createUser(user);
-        //Assert
+        //ASSERT
         assertNotNull(createdUser);
     }
 
     @Test
     public void testGetUser_Valid() {
-        //Setup
+        //SETUP
         User user = new User();
-        //Mock
+        //MOCK
         when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
-        //Execute
+        //EXECUTE
         User foundUser = userServiceImpl.getUser(1);
-        //Assert
+        //ASSERT
         assertNotNull(foundUser);
     }
 
     @Test
-    public void testGetUser_NotFound() {
-        //Mock
+    public void testGetUser_NotFound() { //NO DATA IS NEEDED
+        //MOCK
         when(userRepository.findById(anyInt())).thenReturn(Optional.empty());
-        //Execute & Assert
+        //EXECUTE & ASSERT
         assertThrows(UserNotFoundException.class, () -> userServiceImpl.getUser(1));
     }
 
     @Test
     public void testGetAllUsers() {
-        //Setup
+        //SETUP
         List<User> users = new ArrayList<>();
         users.add(new User());
-        //Mock
+        //MOCK
         when(userRepository.findAll()).thenReturn(users);
-        //Execute
+        //EXECUTE
         List<User> allUsers = userServiceImpl.getAllUsers();
-        //Assert
+        //ASSERT
         assertEquals(1, allUsers.size());
     }
 
     @Test
     public void testUpdateUser_Valid() {
-        //Setup
+        //SETUP
         User user = new User();
         user.setName("UpdatedName");
-        //Mock
+        //MOCK
         when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenReturn(user);
-        //Execute
+        //EXCEUTE
         User updatedUser = userServiceImpl.updateUser(1, user);
-        //Assert
+        //ASSERT
         assertEquals("UpdatedName", updatedUser.getName());
     }
 
     @Test
     public void testDeleteUser_Valid() {
-        //Setup
+        // Setup
         User user = new User();
-        //Mock
+        // Mock
         when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
         doNothing().when(userRepository).deleteById(anyInt());
         //Execute
