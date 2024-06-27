@@ -1,5 +1,8 @@
 package sctp.ntu.booking_api;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -117,9 +120,15 @@ public class UserServiceImplTest {
 
     @Test
     public void testDeleteUser_Valid() {
-        //EXECUTE
+        // Setup
+        User user = new User();
+        // Mock
+        when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
+        doNothing().when(userRepository).deleteById(anyInt());
+        //Execute
         userServiceImpl.deleteUser(1);
-        //VERIFY
+        //Verify
+        verify(userRepository, times(1)).findById(1);
         verify(userRepository, times(1)).deleteById(1);
     }
 }
