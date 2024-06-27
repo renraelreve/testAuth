@@ -95,7 +95,7 @@ public class BookingServiceImplTest {
         //MOCK
         when(bookingRepository.save(any(Booking.class))).thenReturn(booking);
         //EXECUTE
-        Booking updatedBooking = bookingServiceImpl.updateBooking(booking, 4);
+        Booking updatedBooking = bookingServiceImpl.updateBooking(4, booking);
         //ASSERT
         assertEquals(4, updatedBooking.getBookedSeats());
     }
