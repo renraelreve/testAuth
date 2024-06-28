@@ -3,6 +3,8 @@ package sctp.ntu.booking_api.serviceImpls;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import sctp.ntu.booking_api.entities.User;
@@ -31,11 +33,35 @@ public class UserServiceImpl implements UserService {
     return foundUser;
   }
 
+  // @Override
+  // public User createUser(User user) {
+  //   User newUser = userRepository.save(user);
+  //   return newUser;
+  // }
+
+  // https://www.baeldung.com/spring-security-registration-password-encoding-bcrypt
+  
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
   @Override
   public User createUser(User user) {
-    User newUser = userRepository.save(user);
-    return newUser;
+  // public User createUser(User user) throws UserExistsException {
+  //     if (searchUser(user.getName()))) {
+  //         throw new UserExistsException(
+  //           "There is an account with that user name:" + user.getName());
+  //     }
+      User newUser = new User();
+      newUser.setName(user.getName());
+      newUser.setEmail(user.getEmail());
+      
+      newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+      
+      user.setEmail(user.getEmail());
+      // user.setRole(new Role(Integer.valueOf(1), user));
+      return userRepository.save(newUser);
   }
+
 
   @Override
   public User getUser(Integer uid) {
