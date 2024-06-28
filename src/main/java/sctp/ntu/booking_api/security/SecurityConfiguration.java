@@ -41,7 +41,7 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize) ->
                         authorize.anyRequest().permitAll());
-        
+
         return http.build();
     }
 
@@ -59,10 +59,10 @@ public class SecurityConfiguration {
                 .httpBasic(Customizer.withDefaults());
             return http.build();
     }
-       
+
     // https://www.baeldung.com/spring-deprecated-websecurityconfigureradapter
     @Bean
-    AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, UserDetailsService userDetailService) 
+    AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, UserDetailsService userDetailService)
         throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
             .userDetailsService(userDetailService)
@@ -92,7 +92,7 @@ public class SecurityConfiguration {
     //                         .build();
     //     return new InMemoryUserDetailsManager(user);
     // }
- 
+
  // https://howtodoinjava.com/spring-boot2/datasource-configuration/
     // @Bean(name = "h2DataSource")
     // DataSource h2DataSource()
@@ -114,8 +114,8 @@ public class SecurityConfiguration {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
         dataSourceBuilder.url("jdbc:postgresql://localhost:5432/booking_api");
-        dataSourceBuilder.username("repenting");
-        dataSourceBuilder.password("password123");
+        dataSourceBuilder.username("postgres");
+        dataSourceBuilder.password("493827abc");
         return dataSourceBuilder.build();
     }
 
@@ -128,14 +128,14 @@ public class SecurityConfiguration {
         String authsByUserQuery = "select name as username, 'user' as authority from user_name where name = ?";
         // String usersByUsernameQuery = "select username, password, enabled from tbl_users where username = ?"; // matching standard query from custom SQL tables
         // String authsByUserQuery = "select username, authority from tbl_authorities where username = ?"; // matching standard query from custom SQL tables
-            
+
         // JdbcUserDetailsManager users = new JdbcUserDetailsManager(h2DataSource);
         JdbcUserDetailsManager users = new JdbcUserDetailsManager(postgresDataSource);
-      
+
         users.setUsersByUsernameQuery(usersByUsernameQuery);
         users.setAuthoritiesByUsernameQuery(authsByUserQuery);
-      
-        return users;      
+
+        return users;
   }
 
 }
