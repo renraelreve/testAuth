@@ -17,9 +17,20 @@ public class UserServiceImpl implements UserService {
 
   private UserRepository userRepository;
 
+  @Autowired
+  private PasswordEncoder passwordEncoder; // Ensure this is properly injected
+
+  // Commented out this constructor as it doesn't inject PasswordEncoder
   // @Autowired
-  public UserServiceImpl(UserRepository userRepository) {
+  // public UserServiceImpl(UserRepository userRepository) {
+  //   this.userRepository = userRepository;
+  // }
+
+  // New constructor to inject both UserRepository and PasswordEncoder
+  @Autowired
+  public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
@@ -33,35 +44,42 @@ public class UserServiceImpl implements UserService {
     return foundUser;
   }
 
+  // This method was commented out, so no need to uncomment it
   // @Override
   // public User createUser(User user) {
   //   User newUser = userRepository.save(user);
   //   return newUser;
   // }
 
-  // https://www.baeldung.com/spring-security-registration-password-encoding-bcrypt
-  
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-
-  @Override
-  public User createUser(User user) {
+  // Commented out legacy createUser implementation
+  // @Override
   // public User createUser(User user) throws UserExistsException {
   //     if (searchUser(user.getName()))) {
   //         throw new UserExistsException(
   //           "There is an account with that user name:" + user.getName());
   //     }
-      User newUser = new User();
-      newUser.setName(user.getName());
-      newUser.setEmail(user.getEmail());
+  //    User newUser = new User();
+  //    newUser.setName(user.getName());
+  //    newUser.setEmail(user.getEmail());
       
-      newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+  //    newUser.setPassword(passwordEncoder.encode(user.getPassword()));
       
-      user.setEmail(user.getEmail());
-      // user.setRole(new Role(Integer.valueOf(1), user));
-      return userRepository.save(newUser);
-  }
+  //    user.setEmail(user.getEmail());
+  //    // user.setRole(new Role(Integer.valueOf(1), user));
+  //    return userRepository.save(newUser);
+  //}
 
+  @Override
+  public User createUser(User user) {
+    // Encode the user's password
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    User newUser = new User();
+    newUser.setName(user.getName());
+    newUser.setEmail(user.getEmail());
+    newUser.setPassword(user.getPassword());
+    // Save the new user
+    return userRepository.save(newUser);
+  }
 
   @Override
   public User getUser(Integer uid) {
@@ -88,7 +106,7 @@ public class UserServiceImpl implements UserService {
     // update the customer retrieved from the database
     userToUpdate.setName(user.getName());
     userToUpdate.setEmail(user.getEmail());
-    userToUpdate.setEmail(user.getPassword());
+    userToUpdate.setPassword(passwordEncoder.encode(user.getPassword())); // Ensure password is encoded
     // save the updated customer back to the database
     return userRepository.save(userToUpdate);
   }

@@ -15,10 +15,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import sctp.ntu.booking_api.entities.User;
 import sctp.ntu.booking_api.exceptions.UserNotFoundException;
 import sctp.ntu.booking_api.repositories.UserRepository;
+import sctp.ntu.booking_api.security.SecurityConfiguration;
 import sctp.ntu.booking_api.serviceImpls.UserServiceImpl;
 
 public class UserServiceImplTest {
@@ -28,6 +31,10 @@ public class UserServiceImplTest {
 
     @InjectMocks
     private UserServiceImpl userServiceImpl;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
 
     @BeforeEach
     public void setUp() {
@@ -63,12 +70,15 @@ public class UserServiceImplTest {
     public void testCreateUser_Valid() {
         //SETUP
         User user = new User();
+        user.setPassword("password");
         //MOCK
+        when(passwordEncoder.encode(any(CharSequence.class))).thenReturn("null");
         when(userRepository.save(any(User.class))).thenReturn(user);
         //EXECUTE
         User createdUser = userServiceImpl.createUser(user);
         //ASSERT
         assertNotNull(createdUser);
+        assertEquals("null", createdUser.getPassword());
     }
 
     @Test
@@ -108,14 +118,14 @@ public class UserServiceImplTest {
     public void testUpdateUser_Valid() {
         //SETUP
         User user = new User();
-        user.setName("UpdatedName");
+        user.setName("John");
         //MOCK
         when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenReturn(user);
         //EXCEUTE
         User updatedUser = userServiceImpl.updateUser(1, user);
         //ASSERT
-        assertEquals("UpdatedName", updatedUser.getName());
+        assertEquals("John", updatedUser.getName());
     }
 
     @Test
