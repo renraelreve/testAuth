@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 
 import sctp.ntu.booking_api.entities.Event;
 import sctp.ntu.booking_api.entities.Showtime;
+import sctp.ntu.booking_api.exceptions.EventNotFoundException;
 import sctp.ntu.booking_api.repositories.EventRepository;
 import sctp.ntu.booking_api.repositories.ShowtimeRepository;
 import sctp.ntu.booking_api.serviceImpls.EventServiceImpl;
@@ -32,72 +33,95 @@ public class EventServiceImplTest {
 
     @BeforeEach
     public void setUp() {
+        // Setup
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     public void testFindByDescription_Valid() {
-        //SETUP
+        // Setup
         Event event = new Event();
-        //MOCK
+
+        // Mock
         when(eventRepository.findByDescription(anyString())).thenReturn(event);
-        //EXECUTE
+
+        // Execute
         Event foundEvent = eventServiceImpl.findByDescription("Concert");
-        //MOCK
+
+        // Assert
         assertNotNull(foundEvent);
     }
 
     @Test
     public void testFindEventByEid_Valid() {
-        //SETUP
+        // Setup
         Event event = new Event();
-        //MOCK
-        when(eventRepository.findEventByEid(anyInt())).thenReturn(event);
-        //EXECUTE
+
+        // Mock
+        when(eventRepository.findById(anyInt())).thenReturn(Optional.of(event));
+
+        // Execute
         Event foundEvent = eventServiceImpl.findEventByEid(1);
-        //ASSERT
+
+        // Assert
         assertNotNull(foundEvent);
     }
 
     @Test
     public void testGetAllEvents() {
-        //SETUP
+        // Setup
         List<Event> events = new ArrayList<>();
         events.add(new Event());
-        //MOCK
+
+        // Mock
         when(eventRepository.findAll()).thenReturn(events);
-        //EXECUTE
+
+        // Execute
         List<Event> allEvents = eventServiceImpl.getAllEvents();
-        //ASSERT
+
+        // Assert
         assertEquals(1, allEvents.size());
     }
 
     @Test
     public void testAddShowtimeToEvent_Valid() {
-        //SETUP
+        // Setup
         Event event = new Event();
         Showtime showtime = new Showtime();
-        //MOCK
+
+        // Mock
         when(showtimeRepository.save(any(Showtime.class))).thenReturn(showtime);
-        //EXECUTE
+
+        // Execute
         Showtime addedShowtime = eventServiceImpl.addShowtimeToEvent(event, showtime, showtimeRepository);
-        //ASSERT
+
+        // Assert
         assertNotNull(addedShowtime);
     }
 
     @Test
-    public void testDeleteAll() { //DONT NEED EXISTING STATE OR DATA
-        //EXECUTE
+    public void testDeleteAll() {
+        // Execute
         eventServiceImpl.deleteAll();
-        //VERIFY
+
+        // Verify
         verify(eventRepository, times(1)).deleteAll();
     }
 
     @Test
-    public void testDeleteEventByEid_Valid() { //DONT NEED EXISTING STATE OR DATA
-        //EXECUTE
+    public void testDeleteEventByEid_Valid() {
+        // Setup
+        Event event = new Event();
+
+        // Mock
+        when(eventRepository.findById(anyInt())).thenReturn(Optional.of(event));
+        doNothing().when(eventRepository).deleteById(anyInt());
+
+        // Execute
         eventServiceImpl.deleteEventbyEid(1);
-        //VERIFY
-        verify(eventRepository, times(1)).deleteEventByEid(1);
+
+        // Verify
+        verify(eventRepository, times(1)).findById(1);
+        verify(eventRepository, times(1)).deleteById(1);
     }
 }
