@@ -3,6 +3,8 @@ package sctp.ntu.booking_api.serviceImpls;
 import java.time.LocalDate;
 import java.time.Month;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
@@ -29,7 +31,8 @@ public class DataLoader {
     private BookingService bookingService;
     private ShowtimeService showtimeService;
     private UserService userService;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // @Autowired
     public DataLoader(UserRepository userRepository, EventRepository eventRepository, ShowtimeRepository showtimeRepository, BookingRepository bookingRepository, EventService eventService, BookingService bookingService, ShowtimeService showtimeService, UserService userService ) {
@@ -53,10 +56,10 @@ public class DataLoader {
 
         // load data here
         // [Activity 2 - validation]
-        userRepository.save(new User("Abigail", "abigail@gmail.com", "password123"));
-        userRepository.save(new User("Bertrand", "bertrand@gmail.com", "password456"));
-        userRepository.save(new User("Charlie", "charlie@gmail.com", "password789"));
-        userRepository.save(new User("Daniel", "daniel@gmail.com", "password321"));
+        userRepository.save(new User("Abigail", "abigail@gmail.com", passwordEncoder.encode("password123")));
+        userRepository.save(new User("Bertrand", "bertrand@gmail.com", passwordEncoder.encode("password456")));
+        userRepository.save(new User("Charlie", "charlie@gmail.com", passwordEncoder.encode("password789")));
+        userRepository.save(new User("Daniel", "daniel@gmail.com", passwordEncoder.encode("password321")));
 
         eventRepository.save(new Event("Taylor Swift Concert"));       
             eventService.addShowtimeToEvent(eventService.findByDescription("Taylor Swift Concert"), new Showtime(LocalDate.of(2024, Month.MARCH, 2), 2000, 2000), showtimeRepository);
