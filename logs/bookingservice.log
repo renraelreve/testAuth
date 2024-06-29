@@ -1,4 +1,1 @@
-2024-06-28 23:59:43 [main] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 Booking of 0 seats has been deleted
-2024-06-28 23:59:43 [main] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Sample Event on null is now 0
-2024-06-28 23:59:43 [main] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Sample Event on null is now 0
-2024-06-28 23:59:43 [main] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Sample Event on null is now 0
+2024-06-29 09:42:40 [http-nio-8080-exec-2] INFO  s.n.b.s.BookingWithLoggingServiceImpl - 🟢 The balance seats for Taylor Swift Concert on 2024-03-02 is now 1499
