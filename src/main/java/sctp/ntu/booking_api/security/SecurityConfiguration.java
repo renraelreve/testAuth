@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import javax.sql.DataSource;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -24,118 +26,127 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  // Load environment variables from .env file
+  // static {
+  // Dotenv dotenv = Dotenv.configure().load();
+  // System.setProperty("DATABASE_URL", dotenv.get("DATABASE_URL"));
+  // System.setProperty("DATABASE_USERNAME", dotenv.get("DATABASE_USERNAME"));
+  // System.setProperty("DATABASE_PASSWORD", dotenv.get("DATABASE_PASSWORD"));
+  // }
 
-    @Bean
-    @Profile("permitAll")
-    SecurityFilterChain securityFilterChainPermitAll(HttpSecurity http) throws Exception {
-        http.cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests((authorize) ->
-                        authorize.anyRequest().permitAll());
+  @Bean
+  PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-        return http.build();
-    }
+  @Bean
+  @Profile("permitAll")
+  SecurityFilterChain securityFilterChainPermitAll(HttpSecurity http) throws Exception {
+    http.cors(Customizer.withDefaults())
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll());
 
-    @Bean
-    @Profile("withAuth")
-    SecurityFilterChain securityFilterChainWithAuthentication(HttpSecurity http) throws Exception {
-        http.cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests((authorize) ->
-                        authorize
-                        .requestMatchers("/h2").permitAll() // allow access to h2Console
-                        .requestMatchers(HttpMethod.POST).permitAll() // allow any user to POST without Authentication
-                        // https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html#request-authorization-architecture Matching by HTTP method
-                        .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults());
-            return http.build();
-    }
+    return http.build();
+  }
 
-    // https://www.baeldung.com/spring-deprecated-websecurityconfigureradapter
-    @Bean
-    AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, UserDetailsService userDetailService)
-        throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-            .userDetailsService(userDetailService)
-            .passwordEncoder(passwordEncoder)
-            .and()
-            .build();
-    }
+  @Bean
+  @Profile("withAuth")
+  SecurityFilterChain securityFilterChainWithAuthentication(HttpSecurity http) throws Exception {
+    http.cors(Customizer.withDefaults())
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests((authorize) -> authorize
+            .requestMatchers("/h2").permitAll() // allow access to h2Console
+            .requestMatchers(HttpMethod.POST).permitAll() // allow any user to POST without Authentication
+            // https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html#request-authorization-architecture
+            // Matching by HTTP method
+            .anyRequest().authenticated())
+        .httpBasic(Customizer.withDefaults());
+    return http.build();
+  }
 
+  // https://www.baeldung.com/spring-deprecated-websecurityconfigureradapter
+  @Bean
+  AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder,
+      UserDetailsService userDetailService)
+      throws Exception {
+    return http.getSharedObject(AuthenticationManagerBuilder.class)
+        .userDetailsService(userDetailService)
+        .passwordEncoder(passwordEncoder)
+        .and()
+        .build();
+  }
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("*"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+  @Bean
+  CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(Arrays.asList("*"));
+    configuration.setAllowedMethods(Arrays.asList("*"));
+    configuration.setAllowedHeaders(Arrays.asList("*"));
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+  }
 
-    // @Bean
-    // InMemoryUserDetailsManager userDetailsService() {
-    //     UserDetails user = User.builder()
-    //                         .username("user")
-    //                         .password(passwordEncoder().encode("password"))
-    //                         // .roles("USER")
-    //                         .build();
-    //     return new InMemoryUserDetailsManager(user);
-    // }
+  // @Bean
+  // InMemoryUserDetailsManager userDetailsService() {
+  // UserDetails user = User.builder()
+  // .username("user")
+  // .password(passwordEncoder().encode("password"))
+  // // .roles("USER")
+  // .build();
+  // return new InMemoryUserDetailsManager(user);
+  // }
 
- // https://howtodoinjava.com/spring-boot2/datasource-configuration/
-    // @Bean(name = "h2DataSource")
-    // DataSource h2DataSource()
-    // {
-    //     @SuppressWarnings("rawtypes")
-    //     DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-    //     dataSourceBuilder.driverClassName("org.h2.Driver");
-    //     // dataSourceBuilder.url("jdbc:h2:file:C:/temp/test");
-    //     dataSourceBuilder.url("jdbc:h2:mem:booking-api");
-    //     dataSourceBuilder.username("sa");
-    //     dataSourceBuilder.password("");
-    //     return dataSourceBuilder.build();
-    // }
+  // https://howtodoinjava.com/spring-boot2/datasource-configuration/
+  // @Bean(name = "h2DataSource")
+  // DataSource h2DataSource()
+  // {
+  // @SuppressWarnings("rawtypes")
+  // DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+  // dataSourceBuilder.driverClassName("org.h2.Driver");
+  // // dataSourceBuilder.url("jdbc:h2:file:C:/temp/test");
+  // dataSourceBuilder.url("jdbc:h2:mem:booking-api");
+  // dataSourceBuilder.username("sa");
+  // dataSourceBuilder.password("");
+  // return dataSourceBuilder.build();
+  // }
 
-    @Bean(name = "postgresDataSource")
-    DataSource postgresDataSource()
-    {
-        @SuppressWarnings("rawtypes")
-        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName("org.postgresql.Driver");
-        dataSourceBuilder.url("jdbc:postgresql://localhost:5432/booking_api");
-        dataSourceBuilder.username("postgres");
-        dataSourceBuilder.password("493827abc");
-        return dataSourceBuilder.build();
-    }
+  @Bean(name = "postgresDataSource")
+  DataSource postgresDataSource() {
+    @SuppressWarnings("rawtypes")
+    DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+    dataSourceBuilder.driverClassName("org.postgresql.Driver");
+    dataSourceBuilder.url(
+        "jdbc:postgresql://c3gtj1dt5vh48j.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/du5p2phe8u51v?sslmode=require");
+    dataSourceBuilder.username("u6snf56msvih79");
+    dataSourceBuilder.password("pf4c7035ec2468ccb349659f47dee6b93be09d62c376aabfc11bead188663dfc5");
+    return dataSourceBuilder.build();
+  }
 
-    // https://howtodoinjava.com/spring-security/inmemory-jdbc-userdetails-service/
+  // https://howtodoinjava.com/spring-security/inmemory-jdbc-userdetails-service/
 
-    @Bean
-    // UserDetailsService jdbcUserDetailsService(DataSource h2DataSource) {
-    UserDetailsService jdbcUserDetailsService(DataSource postgresDataSource) {
-        String usersByUsernameQuery = "select name as username, password, true as enabled from user_name where name = ?";
-        String authsByUserQuery = "select name as username, 'user' as authority from user_name where name = ?";
-        // String usersByUsernameQuery = "select username, password, enabled from tbl_users where username = ?"; // matching standard query from custom SQL tables
-        // String authsByUserQuery = "select username, authority from tbl_authorities where username = ?"; // matching standard query from custom SQL tables
+  @Bean
+  // UserDetailsService jdbcUserDetailsService(DataSource h2DataSource) {
+  UserDetailsService jdbcUserDetailsService(DataSource postgresDataSource) {
+    String usersByUsernameQuery = "select name as username, password, true as enabled from user_name where name = ?";
+    String authsByUserQuery = "select name as username, 'user' as authority from user_name where name = ?";
+    // String usersByUsernameQuery = "select username, password, enabled from
+    // tbl_users where username = ?"; // matching standard query from custom SQL
+    // tables
+    // String authsByUserQuery = "select username, authority from tbl_authorities
+    // where username = ?"; // matching standard query from custom SQL tables
 
-        // JdbcUserDetailsManager users = new JdbcUserDetailsManager(h2DataSource);
-        JdbcUserDetailsManager users = new JdbcUserDetailsManager(postgresDataSource);
+    // JdbcUserDetailsManager users = new JdbcUserDetailsManager(h2DataSource);
+    JdbcUserDetailsManager users = new JdbcUserDetailsManager(postgresDataSource);
 
-        users.setUsersByUsernameQuery(usersByUsernameQuery);
-        users.setAuthoritiesByUsernameQuery(authsByUserQuery);
+    users.setUsersByUsernameQuery(usersByUsernameQuery);
+    users.setAuthoritiesByUsernameQuery(authsByUserQuery);
 
-        return users;
+    return users;
   }
 
 }

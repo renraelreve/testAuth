@@ -1,0 +1,104 @@
+2024-07-29 22:57:39 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+java.lang.NullPointerException: Cannot read field "generatedClass" because "data" is null
+	at org.springframework.cglib.proxy.Enhancer.nextInstance(Enhancer.java:783)
+	at org.springframework.cglib.core.AbstractClassGenerator.create(AbstractClassGenerator.java:321)
+	at org.springframework.cglib.proxy.Enhancer.createHelper(Enhancer.java:562)
+	at org.springframework.cglib.proxy.Enhancer.createClass(Enhancer.java:407)
+	at org.springframework.context.annotation.ConfigurationClassEnhancer.createClass(ConfigurationClassEnhancer.java:147)
+	at org.springframework.context.annotation.ConfigurationClassEnhancer.enhance(ConfigurationClassEnhancer.java:112)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.enhanceConfigurationClasses(ConfigurationClassPostProcessor.java:534)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanFactory(ConfigurationClassPostProcessor.java:311)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:363)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:153)
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:788)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:606)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at sctp.ntu.booking_api.BookingApiApplication.main(BookingApiApplication.java:16)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+2024-07-29 23:23:59 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataLoader': Invocation of init method failed
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:222)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:422)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1780)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:975)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:962)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at sctp.ntu.booking_api.BookingApiApplication.main(BookingApiApplication.java:16)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: java.lang.NullPointerException: Cannot invoke "sctp.ntu.booking_api.entities.Showtime.getSid()" because "showtime" is null
+	at sctp.ntu.booking_api.serviceImpls.ShowtimeServiceImpl.changeBalSeats(ShowtimeServiceImpl.java:27)
+	at sctp.ntu.booking_api.serviceImpls.BookingWithLoggingServiceImpl.createBooking(BookingWithLoggingServiceImpl.java:52)
+	at sctp.ntu.booking_api.serviceImpls.DataLoader.loadData(DataLoader.java:66)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMethod.invoke(InitDestroyAnnotationBeanPostProcessor.java:457)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:401)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:219)
+	... 23 common frames omitted
+2024-07-29 23:24:41 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+java.lang.NullPointerException: Cannot read field "generatedClass" because "data" is null
+	at org.springframework.cglib.proxy.Enhancer.nextInstance(Enhancer.java:783)
+	at org.springframework.cglib.core.AbstractClassGenerator.create(AbstractClassGenerator.java:321)
+	at org.springframework.cglib.proxy.Enhancer.createHelper(Enhancer.java:562)
+	at org.springframework.cglib.proxy.Enhancer.createClass(Enhancer.java:407)
+	at org.springframework.context.annotation.ConfigurationClassEnhancer.createClass(ConfigurationClassEnhancer.java:147)
+	at org.springframework.context.annotation.ConfigurationClassEnhancer.enhance(ConfigurationClassEnhancer.java:112)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.enhanceConfigurationClasses(ConfigurationClassPostProcessor.java:534)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanFactory(ConfigurationClassPostProcessor.java:311)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:363)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:153)
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:788)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:606)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at sctp.ntu.booking_api.BookingApiApplication.main(BookingApiApplication.java:16)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+2024-07-29 23:24:50 [restartedMain] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
