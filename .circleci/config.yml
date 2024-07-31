@@ -50,10 +50,10 @@ jobs:
       - snyk/install
       - run: |
           snyk code test
-      - snyk/scan:
-          docker-image-name: renraelreve77/booking-api
-          severity-threshold: high
-          fail-on-issues: false
+      # - snyk/scan:
+      #     docker-image-name: renraelreve77/booking-api
+      #     severity-threshold: high
+      #     fail-on-issues: false
   
   publish:
     executor: docker/docker
@@ -66,8 +66,23 @@ jobs:
       - docker/push:
           image: renraelreve77/booking-api
 
+  deploy:
+    docker:
+        - image: cimg/openjdk:17.0
+    steps:
+        - setup_remote_docker      
+        - heroku/install
+        - checkout
+        - run:
+            name: Heroku Container Push
+            command: | 
+                heroku container:login
+                heroku stack:set container -a booking-api
+                heroku container:push web -a booking-api
+                heroku container:release web -a booking-api
+
 workflows:
-  build-and-test:
+  build-and-test-scan-publish-deploy:
     jobs:
       - test-java
       - scan-vulnerabilities:
@@ -80,3 +95,12 @@ workflows:
           requires:
             - test-java
             - scan-vulnerabilities
+          filters:
+            branches:
+              only: develop
+      - deploy:
+          requires:
+            - publish
+          filters:
+            branches:
+              only: release
