@@ -3,6 +3,8 @@ version: 2.1
 orbs:
   snyk: snyk/snyk@1.5.0
   docker: circleci/docker@2.1.4
+  heroku: circleci/heroku@2.0.0
+
 
 jobs:
   test-java:
