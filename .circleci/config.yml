@@ -33,7 +33,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - docker/check
-      - run: docker build -t renraelreve77/booking-api:0.0.2 .
+      - run: docker build -t renraelreve77/booking-api .
       - snyk/scan:
           docker-image-name: renraelreve77/booking-api
           severity-threshold: high
@@ -64,7 +64,7 @@ jobs:
       - docker/build:
           image: renraelreve77/booking-api
       - docker/push:
-          image: renraelreve77/booking-api
+          image: renraelreve77/booking-api:latest
 
 workflows:
   build-and-test:
