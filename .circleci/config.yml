@@ -1,6 +1,8 @@
-# This config was automatically generated from your source code
-# Stacks detected: deps:java:.
 version: 2.1
+
+orbs:
+  snyk: snyk/snyk@1.5.0
+
 jobs:
   test-java:
     docker:
@@ -22,19 +24,23 @@ jobs:
           key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
           paths:
             - ~/.m2/repository
-  deploy:
-    # This is an example deploy job, not actually used by the workflow
+
+  scan-vulnerabilities:
     docker:
-      - image: cimg/base:stable
+      - image: snyk/snyk:docker
     steps:
-      # Replace this with steps to deploy to users
-      - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+      - checkout
+      - setup_remote_docker
+      - run: docker build -t renraelreve77/booking-api .
+      - snyk/scan:
+          docker-image-name: renraelreve77/booking-api
+          severity-threshold: high
+          fail-on-issues: false
+
 workflows:
   build-and-test:
     jobs:
       - test-java
-    # - deploy:
-    #     requires:
-    #       - test-java
+      - scan-vulnerabilities:
+          requires:
+            - test-java
