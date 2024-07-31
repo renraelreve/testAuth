@@ -10,4 +10,4 @@ ENV PORT=8080
 COPY --from=build /app/target/booking-api-0.0.1-SNAPSHOT.jar /app.jar
 # ENTRYPOINT ["java", "-jar", "/app.jar", "-Dserver.port=Integer.parseInt($PORT)"]
 # https://stackoverflow.com/questions/37904682/how-do-i-use-docker-environment-variable-in-entrypoint-array
-ENTRYPOINT java -jar /app.jar --server.port=$PORT
+ENTRYPOINT java -jar /app.jar -Dserver.port=$PORT
