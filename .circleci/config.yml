@@ -39,7 +39,7 @@ jobs:
           severity-threshold: high
           fail-on-issues: false
   
-    codescan:
+  codescan:
     docker:
       - image: cimg/openjdk:17.0
     steps:
