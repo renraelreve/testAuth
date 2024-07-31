@@ -99,7 +99,9 @@ workflows:
             - scan-vulnerabilities
           filters:
             branches:
-              only: develop
+              only: 
+                - develop
+                - testrelease
       - deploy:
           requires:
             - publish
