@@ -8,4 +8,4 @@ RUN mvn clean install -DskipTests
 FROM eclipse-temurin:17
 ENV PORT=$PORT
 COPY --from=build /app/target/booking-api-0.0.1-SNAPSHOT.jar /app.jar
-ENTRYPOINT ["java", "-jar", "/app.jar", "--server.port=$PORT"]
+ENTRYPOINT ["java", "-jar", "/app.jar"]
