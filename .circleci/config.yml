@@ -38,11 +38,26 @@ jobs:
           docker-image-name: renraelreve77/booking-api
           severity-threshold: high
           fail-on-issues: false
+  
+    codescan:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
+      - setup_remote_docker
+      - docker/check
+      - run: docker build -t renraelreve77/booking-api .
+      - snyk/install
+      - run: |
+          snyk code test
 
 workflows:
   build-and-test:
     jobs:
       - test-java
       - scan-vulnerabilities:
+          requires:
+            - test-java
+      - codescan:
           requires:
             - test-java
