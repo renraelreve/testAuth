@@ -105,4 +105,4 @@ workflows:
             - publish
           filters:
             branches:
-              only: release
+              only: testrelease
