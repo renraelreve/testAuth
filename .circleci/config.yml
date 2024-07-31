@@ -50,6 +50,10 @@ jobs:
       - snyk/install
       - run: |
           snyk code test
+      - snyk/scan:
+          docker-image-name: renraelreve77/booking-api
+          severity-threshold: high
+          fail-on-issues: false
 
 workflows:
   build-and-test:
