@@ -27,10 +27,11 @@ jobs:
 
   scan-vulnerabilities:
     docker:
-      - image: snyk/snyk:docker
+      - image: cimg/openjdk:17.0
     steps:
       - checkout
       - setup_remote_docker
+      - docker/check
       - run: docker build -t renraelreve77/booking-api .
       - snyk/scan:
           docker-image-name: renraelreve77/booking-api
