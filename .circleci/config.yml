@@ -54,6 +54,17 @@ jobs:
           docker-image-name: renraelreve77/booking-api
           severity-threshold: high
           fail-on-issues: false
+  
+  publish:
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check
+      - docker/build:
+          image: renraelreve77/booking-api
+      - docker/push:
+          image: renraelreve77/booking-api
 
 workflows:
   build-and-test:
@@ -65,3 +76,7 @@ workflows:
       - codescan:
           requires:
             - test-java
+      - publish:
+          requires:
+            - test-java
+            - scan-vulnerabilities
