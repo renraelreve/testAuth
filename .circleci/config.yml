@@ -97,11 +97,7 @@ workflows:
           requires:
             - test-java
             - scan-vulnerabilities
-          filters:
-            branches:
-              only:
-                - develop
-                - testrelease
+
       - deploy:
           requires:
             - publish
