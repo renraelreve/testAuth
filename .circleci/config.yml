@@ -103,4 +103,4 @@ workflows:
             - publish
           filters:
             branches:
-              only: testreleasentg
+              only: release
