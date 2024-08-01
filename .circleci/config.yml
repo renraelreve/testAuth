@@ -40,7 +40,7 @@ jobs:
           docker-image-name: renraelreve77/booking-api
           severity-threshold: high
           fail-on-issues: false
-  
+
   codescan:
     docker:
       - image: cimg/openjdk:17.0
@@ -56,7 +56,7 @@ jobs:
       #     docker-image-name: renraelreve77/booking-api
       #     severity-threshold: high
       #     fail-on-issues: false
-  
+
   publish:
     executor: docker/docker
     steps:
@@ -72,12 +72,12 @@ jobs:
     docker:
         - image: cimg/openjdk:17.0
     steps:
-        - setup_remote_docker      
+        - setup_remote_docker
         - heroku/install
         - checkout
         - run:
-            name: Heroku Container Push
-            command: | 
+            name: Heroku Container-Push
+            command: |
                 heroku container:login
                 heroku stack:set container -a booking-api
                 heroku container:push web -a booking-api
@@ -99,7 +99,7 @@ workflows:
             - scan-vulnerabilities
           filters:
             branches:
-              only: 
+              only:
                 - develop
                 - testrelease
       - deploy:
