@@ -4,8 +4,6 @@ orbs:
   snyk: snyk/snyk@1.5.0
   docker: circleci/docker@2.1.4
   heroku: circleci/heroku@2.0.0
-
-
 jobs:
   build-and-test:
     docker:
@@ -59,17 +57,6 @@ jobs:
       #     docker-image-name: renraelreve77/booking-api
       #     severity-threshold: high
       #     fail-on-issues: false
-
-  publish:
-    executor: docker/docker
-    steps:
-      - setup_remote_docker
-      - checkout
-      - docker/check
-      - docker/build:
-          image: renraelreve77/booking-api
-      - docker/push:
-          image: renraelreve77/booking-api
 
   deploy:
     docker:
