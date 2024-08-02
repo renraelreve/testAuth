@@ -121,8 +121,17 @@ public class SecurityConfiguration {
       @Value("${spring.datasource.url}") String springDatasourceUrl, 
       @Value("${spring.datasource.username}") String springDatasourceUsername,
       @Value("${spring.datasource.password}") String springDatasourcePassword) {
+
+    // removing single quotes
+    springDatasourceUrl = springDatasourceUrl.substring(1, springDatasourceUrl.length() -1);
+
     System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX Checking spring.datasource.X @Value XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
     System.out.println("XXXX" + springDatasourceUrl + "XXXX");
+    System.out.println("XXXX" + springDatasourceUsername + "XXXX");
+    System.out.println("XXXX" + springDatasourcePassword + "XXXX");
+
+
+
     @SuppressWarnings("rawtypes")
     DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
     dataSourceBuilder.driverClassName("org.postgresql.Driver");
