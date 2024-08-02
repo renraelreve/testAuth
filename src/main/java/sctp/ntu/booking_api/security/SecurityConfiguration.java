@@ -123,6 +123,7 @@ public class SecurityConfiguration {
       @Value("${spring.datasource.password}") String springDatasourcePassword) {
 
     // removing single quotes (only for local, not for deploy)
+    System.out.println(springDatasourceUrl.substring(0, 1));
     springDatasourceUrl = springDatasourceUrl.substring(0, 1) == "'" ? springDatasourceUrl.substring(1, springDatasourceUrl.length() -1) : springDatasourceUrl;
 
     System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX Checking spring.datasource.X @Value XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
