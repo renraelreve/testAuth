@@ -7,30 +7,33 @@ orbs:
 
 
 jobs:
-  test-java:
+  build-and-test:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:19.0.1
     steps:
       - checkout
       - run:
-          name: Calculate Cache Key
-          command: |-
-            find . -name 'pom.xml' -o -name 'gradlew*' -o -name '*.gradle*' | \
-                    sort | xargs cat > /tmp/CIRCLECI_CACHE_KEY
-      - restore_cache:
-          key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
+          name: Build
+          command: mvn -B -DskipTests clean package
       - run:
-          command: mvn verify
-      - store_test_results:
-          path: target/surefire-reports
-      - save_cache:
-          key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
-          paths:
-            - ~/.m2/repository
+          name: Test
+          command: mvn test
+  publish:
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check
+      - docker/build:
+          image: renraelreve77/booking-api
+          tag: 1.0.1
+      - docker/push:
+          image: renraelreve77/booking-api
+          tag: 1.0.1
 
   scan-vulnerabilities:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:19.0.1
     steps:
       - checkout
       - setup_remote_docker
@@ -43,7 +46,7 @@ jobs:
 
   codescan:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:19.0.1
     steps:
       - checkout
       - setup_remote_docker
@@ -70,32 +73,31 @@ jobs:
 
   deploy:
     docker:
-        - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:19.0.1
     steps:
-        - setup_remote_docker
-        - heroku/install
-        - checkout
-        - run:
-            name: Heroku Container Push
-            command: |
-                heroku container:login
-                heroku stack:set container -a booking-api
-                heroku container:push web -a booking-api
-                heroku container:release web -a booking-api
+      - setup_remote_docker
+      - heroku/install
+      - checkout
+      - run:
+          name: Heroku Container Push
+          command: |
+              heroku container:login
+              heroku container:push web -a booking-api
+              heroku container:release web -a booking-api
 
 workflows:
   build-and-test-scan-publish-deploy:
     jobs:
-      - test-java
+      - build-and-test
       - scan-vulnerabilities:
           requires:
-            - test-java
+            - build-and-test
       - codescan:
           requires:
-            - test-java
+            - build-and-test
       - publish:
           requires:
-            - test-java
+            - build-and-test
             - scan-vulnerabilities
 
       - deploy:
