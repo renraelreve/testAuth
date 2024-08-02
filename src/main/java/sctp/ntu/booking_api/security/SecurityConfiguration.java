@@ -122,12 +122,8 @@ public class SecurityConfiguration {
       @Value("${spring.datasource.username}") String springDatasourceUsername,
       @Value("${spring.datasource.password}") String springDatasourcePassword) {
 
-    // removing single quotes (only for local, not for deploy)
-    System.out.println(springDatasourceUrl.substring(0, 1));
-    springDatasourceUrl = springDatasourceUrl.substring(0, 1) == "'" ? springDatasourceUrl.replaceAll("'",  "") : springDatasourceUrl;
-
     System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX Checking spring.datasource.X @Value XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-    System.out.println("XXXX" + springDatasourceUrl.replaceAll("'",  "") + "XXXX");
+    System.out.println("XXXX" + springDatasourceUrl + "XXXX");
     System.out.println("XXXX" + springDatasourceUsername + "XXXX");
     System.out.println("XXXX" + springDatasourcePassword + "XXXX");
 
@@ -141,7 +137,7 @@ public class SecurityConfiguration {
     //     "jdbc:postgresql://c3gtj1dt5vh48j.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/du5p2phe8u51v?sslmode=require");
     // dataSourceBuilder.username("u6snf56msvih79");
     // dataSourceBuilder.password("pf4c7035ec2468ccb349659f47dee6b93be09d62c376aabfc11bead188663dfc5");
-    dataSourceBuilder.url(springDatasourceUrl);
+    dataSourceBuilder.url(springDatasourceUrl.replaceAll("'",  ""));
     dataSourceBuilder.username(springDatasourceUsername);
     dataSourceBuilder.password(springDatasourcePassword);
     return dataSourceBuilder.build();
