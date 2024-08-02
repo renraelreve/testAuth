@@ -76,7 +76,7 @@ jobs:
         - heroku/install
         - checkout
         - run:
-            name: Heroku Container Push
+            name: Heroku Container-Push
             command: |
                 heroku container:login
                 heroku stack:set container -a booking-api
@@ -103,4 +103,4 @@ workflows:
             - publish
           filters:
             branches:
-              only: release
+              only: develop
