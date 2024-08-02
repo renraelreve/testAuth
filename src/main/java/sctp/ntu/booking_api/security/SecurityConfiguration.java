@@ -127,7 +127,7 @@ public class SecurityConfiguration {
     springDatasourceUrl = springDatasourceUrl.substring(0, 1) == "'" ? springDatasourceUrl.replaceAll("'",  "") : springDatasourceUrl;
 
     System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX Checking spring.datasource.X @Value XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-    System.out.println("XXXX" + springDatasourceUrl + "XXXX");
+    System.out.println("XXXX" + springDatasourceUrl.replaceAll("'",  "") + "XXXX");
     System.out.println("XXXX" + springDatasourceUsername + "XXXX");
     System.out.println("XXXX" + springDatasourcePassword + "XXXX");
 
