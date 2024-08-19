@@ -92,4 +92,6 @@ workflows:
             - publish
           filters:
             branches:
-              only: release, imageUrl
+              only:
+                - release
+                - imageUrl
