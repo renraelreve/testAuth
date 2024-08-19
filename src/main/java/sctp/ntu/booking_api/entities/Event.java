@@ -25,23 +25,28 @@ import lombok.Setter;
 @Table(name = "event")
 public class Event {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "eid")
-    private Integer eid;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "eid")
+  private Integer eid;
 
-    @NotBlank(message = "Description is mandatory")
-    @Column(name = "description")
-    public String description;
+  @NotBlank(message = "Description is mandatory")
+  @Column(name = "description")
+  public String description;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", cascade = CascadeType.ALL)
-    private List<Showtime> showtime;
+  @Column(name = "image_url")
+  private String imageUrl;
 
-    // Constructor
-    public Event(){}
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", cascade = CascadeType.ALL)
+  private List<Showtime> showtime;
 
-    public Event(String description) {
-        this();
-        this.description = description;
-    }
+  // Constructor
+  public Event() {
+  }
+
+  public Event(String description, String imageUrl) {
+    this();
+    this.description = description;
+    this.imageUrl = imageUrl;
+  }
 }

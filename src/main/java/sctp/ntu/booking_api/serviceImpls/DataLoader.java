@@ -22,66 +22,80 @@ import sctp.ntu.booking_api.services.UserService;
 
 @Component
 public class DataLoader {
-    
-    private UserRepository userRepository;
-    private EventRepository eventRepository;
-    private ShowtimeRepository showtimeRepository;
-    private BookingRepository bookingRepository;
-    private EventService eventService;
-    private BookingService bookingService;
-    private ShowtimeService showtimeService;
-    private UserService userService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
-    // @Autowired
-    public DataLoader(UserRepository userRepository, EventRepository eventRepository, ShowtimeRepository showtimeRepository, BookingRepository bookingRepository, EventService eventService, BookingService bookingService, ShowtimeService showtimeService, UserService userService ) {
-        this.userRepository = userRepository;
-        this.eventRepository = eventRepository;
-        this.showtimeRepository = showtimeRepository;
-        this.bookingRepository = bookingRepository;
-        this.eventService = eventService;
-        this.bookingService = bookingService;
-        this.showtimeService = showtimeService;
-        this.userService = userService;
-    }
+  private UserRepository userRepository;
+  private EventRepository eventRepository;
+  private ShowtimeRepository showtimeRepository;
+  private BookingRepository bookingRepository;
+  private EventService eventService;
+  private BookingService bookingService;
+  private ShowtimeService showtimeService;
+  private UserService userService;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
-    @PostConstruct
-    public void loadData() {
-        // clear the database first
-        userRepository.deleteAll();
-        eventRepository.deleteAll();
-        showtimeRepository.deleteAll();
-        bookingRepository.deleteAll();
+  // @Autowired
+  public DataLoader(UserRepository userRepository, EventRepository eventRepository,
+      ShowtimeRepository showtimeRepository, BookingRepository bookingRepository, EventService eventService,
+      BookingService bookingService, ShowtimeService showtimeService, UserService userService) {
+    this.userRepository = userRepository;
+    this.eventRepository = eventRepository;
+    this.showtimeRepository = showtimeRepository;
+    this.bookingRepository = bookingRepository;
+    this.eventService = eventService;
+    this.bookingService = bookingService;
+    this.showtimeService = showtimeService;
+    this.userService = userService;
+  }
 
-        // load data here
-        // [Activity 2 - validation]
-        userRepository.save(new User("Abigail", "abigail@gmail.com", passwordEncoder.encode("password123")));
-        userRepository.save(new User("Bertrand", "bertrand@gmail.com", passwordEncoder.encode("password456")));
-        userRepository.save(new User("Charlie", "charlie@gmail.com", passwordEncoder.encode("password789")));
-        userRepository.save(new User("Daniel", "daniel@gmail.com", passwordEncoder.encode("password321")));
+  @PostConstruct
+  public void loadData() {
+    // clear the database first
+    userRepository.deleteAll();
+    eventRepository.deleteAll();
+    showtimeRepository.deleteAll();
+    bookingRepository.deleteAll();
 
-        eventRepository.save(new Event("Taylor Swift Concert"));       
-            eventService.addShowtimeToEvent(eventService.findByDescription("Taylor Swift Concert"), new Showtime(LocalDate.of(2024, Month.MARCH, 2), 2000, 2000), showtimeRepository);
-                bookingService.createBooking(showtimeService.findShowtimeBySid(1), userService.findOneUser("Abigail"), 1);
-            eventService.addShowtimeToEvent(eventService.findByDescription("Taylor Swift Concert"), new Showtime(LocalDate.of(2024, Month.MARCH, 3), 2000, 2000), showtimeRepository);
-                bookingService.createBooking(showtimeService.findShowtimeBySid(2), userService.findOneUser("Abigail"), 1);
-            eventService.addShowtimeToEvent(eventService.findByDescription("Taylor Swift Concert"), new Showtime(LocalDate.of(2024, Month.MARCH, 4), 2000, 2000), showtimeRepository);
-                bookingService.createBooking(showtimeService.findShowtimeBySid(3), userService.findOneUser("Abigail"), 1);
-            eventService.addShowtimeToEvent(eventService.findByDescription("Taylor Swift Concert"), new Showtime(LocalDate.of(2024, Month.MARCH, 7), 2000, 2000), showtimeRepository);
-            eventService.addShowtimeToEvent(eventService.findByDescription("Taylor Swift Concert"), new Showtime(LocalDate.of(2024, Month.MARCH, 8), 2000, 2000), showtimeRepository);
-            eventService.addShowtimeToEvent(eventService.findByDescription("Taylor Swift Concert"), new Showtime(LocalDate.of(2024, Month.MARCH, 9), 2000, 2000), showtimeRepository);
+    // load data here
+    // [Activity 2 - validation]
+    userRepository.save(new User("Abigail", "abigail@gmail.com", passwordEncoder.encode("password123")));
+    userRepository.save(new User("Bertrand", "bertrand@gmail.com", passwordEncoder.encode("password456")));
+    userRepository.save(new User("Charlie", "charlie@gmail.com", passwordEncoder.encode("password789")));
+    userRepository.save(new User("Daniel", "daniel@gmail.com", passwordEncoder.encode("password321")));
 
-        eventRepository.save(new Event("Singapore vs South Korea World Cup Qualifier"));
-            eventService.addShowtimeToEvent(eventService.findByDescription("Singapore vs South Korea World Cup Qualifier"), new Showtime(LocalDate.of(2024, Month.JUNE, 6), 2000, 2000), showtimeRepository);
-                bookingService.createBooking(showtimeService.findShowtimeBySid(7), userService.findOneUser("Bertrand"), 6);
-                
-        eventRepository.save(new Event("Formula 1 Race"));
-            eventService.addShowtimeToEvent(eventService.findByDescription("Formula 1 Race"), new Showtime(LocalDate.of(2024, Month.SEPTEMBER, 1), 2000, 2000), showtimeRepository);
-            eventService.addShowtimeToEvent(eventService.findByDescription("Formula 1 Race"), new Showtime(LocalDate.of(2024, Month.SEPTEMBER, 2), 2000, 2000), showtimeRepository);
-                bookingService.createBooking(showtimeService.findShowtimeBySid(9), userService.findOneUser("Charlie"), 2);
-                bookingService.createBooking(showtimeService.findShowtimeBySid(9), userService.findOneUser("Daniel"), 6);    
-            eventService.addShowtimeToEvent(eventService.findByDescription("Formula 1 Race"), new Showtime(LocalDate.of(2024, Month.SEPTEMBER, 3), 2000, 2000), showtimeRepository);
-    
-    }
+    eventRepository.save(new Event("Taylor Swift Concert", "https://unsplash.com/photos/taj-mahal-india-FBaz9ET0cfY"));
+    eventService.addShowtimeToEvent(eventService.findByDescription("Taylor Swift Concert"),
+        new Showtime(LocalDate.of(2024, Month.MARCH, 2), 2000, 2000), showtimeRepository);
+    bookingService.createBooking(showtimeService.findShowtimeBySid(1), userService.findOneUser("Abigail"), 1);
+    eventService.addShowtimeToEvent(eventService.findByDescription("Taylor Swift Concert"),
+        new Showtime(LocalDate.of(2024, Month.MARCH, 3), 2000, 2000), showtimeRepository);
+    bookingService.createBooking(showtimeService.findShowtimeBySid(2), userService.findOneUser("Abigail"), 1);
+    eventService.addShowtimeToEvent(eventService.findByDescription("Taylor Swift Concert"),
+        new Showtime(LocalDate.of(2024, Month.MARCH, 4), 2000, 2000), showtimeRepository);
+    bookingService.createBooking(showtimeService.findShowtimeBySid(3), userService.findOneUser("Abigail"), 1);
+    eventService.addShowtimeToEvent(eventService.findByDescription("Taylor Swift Concert"),
+        new Showtime(LocalDate.of(2024, Month.MARCH, 7), 2000, 2000), showtimeRepository);
+    eventService.addShowtimeToEvent(eventService.findByDescription("Taylor Swift Concert"),
+        new Showtime(LocalDate.of(2024, Month.MARCH, 8), 2000, 2000), showtimeRepository);
+    eventService.addShowtimeToEvent(eventService.findByDescription("Taylor Swift Concert"),
+        new Showtime(LocalDate.of(2024, Month.MARCH, 9), 2000, 2000), showtimeRepository);
+
+    eventRepository.save(new Event("Singapore vs South Korea World Cup Qualifier",
+        "https://unsplash.com/photos/a-castle-sitting-on-top-of-a-cliff-next-to-the-ocean-2IANV4if3u8"));
+    eventService.addShowtimeToEvent(eventService.findByDescription("Singapore vs South Korea World Cup Qualifier"),
+        new Showtime(LocalDate.of(2024, Month.JUNE, 6), 2000, 2000), showtimeRepository);
+    bookingService.createBooking(showtimeService.findShowtimeBySid(7), userService.findOneUser("Bertrand"), 6);
+
+    eventRepository.save(new Event("Formula 1 Race",
+        "https://unsplash.com/photos/brown-and-gray-road-street-signs-at-daytime-l5-za_iUUdA"));
+    eventService.addShowtimeToEvent(eventService.findByDescription("Formula 1 Race"),
+        new Showtime(LocalDate.of(2024, Month.SEPTEMBER, 1), 2000, 2000), showtimeRepository);
+    eventService.addShowtimeToEvent(eventService.findByDescription("Formula 1 Race"),
+        new Showtime(LocalDate.of(2024, Month.SEPTEMBER, 2), 2000, 2000), showtimeRepository);
+    bookingService.createBooking(showtimeService.findShowtimeBySid(9), userService.findOneUser("Charlie"), 2);
+    bookingService.createBooking(showtimeService.findShowtimeBySid(9), userService.findOneUser("Daniel"), 6);
+    eventService.addShowtimeToEvent(eventService.findByDescription("Formula 1 Race"),
+        new Showtime(LocalDate.of(2024, Month.SEPTEMBER, 3), 2000, 2000), showtimeRepository);
+
+  }
 }
