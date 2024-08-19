@@ -63,7 +63,8 @@ public class DataLoader {
     userRepository.save(new User("Charlie", "charlie@gmail.com", passwordEncoder.encode("password789")));
     userRepository.save(new User("Daniel", "daniel@gmail.com", passwordEncoder.encode("password321")));
 
-    eventRepository.save(new Event("Taylor Swift Concert", "https://unsplash.com/photos/taj-mahal-india-FBaz9ET0cfY"));
+    eventRepository.save(new Event("Taylor Swift Concert",
+        "https://www.studentuniverse.com/blog/wp-content/uploads/2014/04/Most-Beautiful-Places-to-Travel-Featured-Image.jpg"));
     eventService.addShowtimeToEvent(eventService.findByDescription("Taylor Swift Concert"),
         new Showtime(LocalDate.of(2024, Month.MARCH, 2), 2000, 2000), showtimeRepository);
     bookingService.createBooking(showtimeService.findShowtimeBySid(1), userService.findOneUser("Abigail"), 1);
@@ -81,13 +82,13 @@ public class DataLoader {
         new Showtime(LocalDate.of(2024, Month.MARCH, 9), 2000, 2000), showtimeRepository);
 
     eventRepository.save(new Event("Singapore vs South Korea World Cup Qualifier",
-        "https://unsplash.com/photos/a-castle-sitting-on-top-of-a-cliff-next-to-the-ocean-2IANV4if3u8"));
+        "https://www.planetware.com/wpimages/2019/10/asia-best-places-to-visit-mount-fuji-japan.jpg"));
     eventService.addShowtimeToEvent(eventService.findByDescription("Singapore vs South Korea World Cup Qualifier"),
         new Showtime(LocalDate.of(2024, Month.JUNE, 6), 2000, 2000), showtimeRepository);
     bookingService.createBooking(showtimeService.findShowtimeBySid(7), userService.findOneUser("Bertrand"), 6);
 
     eventRepository.save(new Event("Formula 1 Race",
-        "https://unsplash.com/photos/brown-and-gray-road-street-signs-at-daytime-l5-za_iUUdA"));
+        "https://img.veenaworld.com/wp-content/uploads/2023/09/Famous-Places-in-the-World-Checking-off-the-Ultimate-Bucket-List.jpg"));
     eventService.addShowtimeToEvent(eventService.findByDescription("Formula 1 Race"),
         new Showtime(LocalDate.of(2024, Month.SEPTEMBER, 1), 2000, 2000), showtimeRepository);
     eventService.addShowtimeToEvent(eventService.findByDescription("Formula 1 Race"),
