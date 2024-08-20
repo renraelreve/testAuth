@@ -69,8 +69,8 @@ jobs:
           name: Heroku Container Push
           command: |
               heroku container:login
-              heroku container:push web -a booking-api
-              heroku container:release web -a booking-api
+              heroku container:push web -a testauth
+              heroku container:release web -a testauth
 
 workflows:
   build-and-test-scan-publish-deploy:
