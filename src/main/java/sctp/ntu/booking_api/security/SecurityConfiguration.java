@@ -66,7 +66,8 @@ public class SecurityConfiguration {
             .requestMatchers(HttpMethod.POST).permitAll() // allow any user to POST without Authentication
             // https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html#request-authorization-architecture
             // Matching by HTTP method
-            .requestMatchers("/api/auth/**").permitAll() // Allow unauthenticated access to the auth endpoint
+            // .requestMatchers("/api/auth/**").permitAll() // Allow unauthenticated access
+            // to the auth endpoint
             .anyRequest().authenticated())
         .httpBasic(Customizer.withDefaults());
     return http.build();
