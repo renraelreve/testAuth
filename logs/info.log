@@ -1183,3 +1183,14 @@ Unconditional classes:
 2024-08-02 12:55:10 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 2024-08-02 12:55:10 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown initiated...
 2024-08-02 12:55:12 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown completed.
+2024-08-20 19:26:25 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [sctp.ntu.booking_api.BookingApiApplicationTests]: BookingApiApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2024-08-20 19:26:25 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration sctp.ntu.booking_api.BookingApiApplication for test class sctp.ntu.booking_api.BookingApiApplicationTests
+2024-08-20 19:26:25 [main] INFO  o.s.b.d.r.RestartApplicationListener - Restart disabled due to context in which it is running
+2024-08-20 19:26:26 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-08-20 19:26:26 [main] INFO  s.n.b.BookingApiApplicationTests - Starting BookingApiApplicationTests using Java 17.0.11 with PID 548126 (started by ngteckguan in /home/ngteckguan/code/testing/booking_api)
+2024-08-20 19:26:26 [main] INFO  s.n.b.BookingApiApplicationTests - The following 1 profile is active: "withAuth"
+2024-08-20 19:26:27 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-08-20 19:26:27 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 75 ms. Found 4 JPA repository interfaces.
+2024-08-20 19:26:27 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
