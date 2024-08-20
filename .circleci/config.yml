@@ -93,6 +93,6 @@ workflows:
           filters:
             branches:
               only:
-                # - release
+                - release
                 - imageUrl
                 - testAuth
