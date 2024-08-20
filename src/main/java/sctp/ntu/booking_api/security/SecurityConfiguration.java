@@ -30,7 +30,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity
-@PropertySource(value={"classpath:application.properties"})
+@PropertySource(value = { "classpath:application.properties" })
 public class SecurityConfiguration {
 
   // Load environment variables from .env file
@@ -66,6 +66,7 @@ public class SecurityConfiguration {
             .requestMatchers(HttpMethod.POST).permitAll() // allow any user to POST without Authentication
             // https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html#request-authorization-architecture
             // Matching by HTTP method
+            .requestMatchers("/api/auth/**").permitAll() // Allow unauthenticated access to the auth endpoint
             .anyRequest().authenticated())
         .httpBasic(Customizer.withDefaults());
     return http.build();
@@ -120,11 +121,12 @@ public class SecurityConfiguration {
 
   @Bean(name = "postgresDataSource")
   DataSource postgresDataSource(
-      @Value("${spring.datasource.url}") String springDatasourceUrl, 
+      @Value("${spring.datasource.url}") String springDatasourceUrl,
       @Value("${spring.datasource.username}") String springDatasourceUsername,
       @Value("${spring.datasource.password}") String springDatasourcePassword) {
 
-    System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX Checking spring.datasource.X @Value XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+    System.out.println(
+        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX Checking spring.datasource.X @Value XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
     System.out.println("XXXX" + springDatasourceUrl + "XXXX");
     System.out.println("XXXX" + springDatasourceUsername + "XXXX");
     System.out.println("XXXX" + springDatasourcePassword + "XXXX");
@@ -132,7 +134,7 @@ public class SecurityConfiguration {
     @SuppressWarnings("rawtypes")
     DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
     dataSourceBuilder.driverClassName("org.postgresql.Driver");
-    dataSourceBuilder.url(springDatasourceUrl.replaceAll("'",  ""));
+    dataSourceBuilder.url(springDatasourceUrl.replaceAll("'", ""));
     dataSourceBuilder.username(springDatasourceUsername);
     dataSourceBuilder.password(springDatasourcePassword);
     return dataSourceBuilder.build();

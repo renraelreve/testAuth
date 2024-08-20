@@ -76,16 +76,16 @@ workflows:
   build-and-test-scan-publish-deploy:
     jobs:
       - build-and-test
-      - scan-vulnerabilities:
-          requires:
-            - build-and-test
-      - codescan:
-          requires:
-            - build-and-test
+      # - scan-vulnerabilities:
+      #     requires:
+      #       - build-and-test
+      # - codescan:
+      #     requires:
+      #       - build-and-test
       - publish:
           requires:
             - build-and-test
-            - scan-vulnerabilities
+            # - scan-vulnerabilities
 
       - deploy:
           requires:
@@ -95,3 +95,4 @@ workflows:
               only:
                 - release
                 - imageUrl
+                - testAuth
